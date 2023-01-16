@@ -142,13 +142,13 @@ startup
     vars.warpSplits = new Dictionary<int, List<int>>();
     vars.warpsVisited = new Dictionary<int, int>();
 
-    settings.Add("split-boss", false, "Split Boss Entrances");
-    settings.Add("split-longhunter", false, "Longhunter", "split-boss");
-    settings.Add("split-mantis", false, "Mantis", "split-boss");
-    settings.Add("split-thunder", false, "Thunder", "split-boss");
-    settings.Add("split-campaigner", false, "Campaigner", "split-boss");
-    settings.Add("subsplits", false, "Warp Subsplits");
-    settings.Add("split-warps-anyp", false, "Split Blue Planes (Any% Routes)", "subsplits");
+    settings.Add("split-boss", true, "Split Boss Entrances");
+    settings.Add("split-longhunter", true, "Longhunter", "split-boss");
+    settings.Add("split-mantis", true, "Mantis", "split-boss");
+    settings.Add("split-thunder", true, "Thunder", "split-boss");
+    settings.Add("split-campaigner", true, "Campaigner", "split-boss");
+    settings.Add("subsplits", true, "Warp Subsplits");
+    settings.Add("split-warps-anyp", true, "Split Blue Planes (Any% Routes)", "subsplits");
     settings.SetToolTip("split-warps-anyp", "Split Blue Planes for the Any% routes");
     settings.Add("misc", true, "Misc");
     settings.Add("reset-title", true, "Reset on Titlescreen", "misc");
