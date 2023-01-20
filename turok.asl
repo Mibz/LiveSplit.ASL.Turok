@@ -156,7 +156,7 @@ start
         if (splitCount == 43)
         {
             // Beginner Route
-            vars.debug("Any% Beginner Route detected")
+            vars.debug("Any% Beginner Route detected");
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
@@ -174,7 +174,7 @@ start
         else
         {
             // Current Route
-            vars.debug("Any% Route detected")
+            vars.debug("Any% Route detected");
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
