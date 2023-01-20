@@ -37,7 +37,7 @@ state("sobek", "2.0")
     string40 map: 0x38E3FC, 0x0;
     int health: 0x390CF4, 0xE0;
     int level8BossHealth: 0x393118, 0xE0;
-    int warpId: 0x393684; 
+    int warpId: 0x49ED0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
 }
 
