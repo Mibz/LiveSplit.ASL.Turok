@@ -148,7 +148,7 @@ start
 
     // Get number of splits
     int splitCount = timer.Run.Count();
-    vars.debug("splitCount: " + splitCount)
+    vars.debug("splitCount: " + splitCount);
 
     // Any% Route Splits
     if (settings["split-warps-anyp"] && timer.Run.CategoryName.ToLower().Contains("any%"))
@@ -206,13 +206,13 @@ split
                         current.map == "levels/level00.map"; // Did we kill the Campaigner?
 
     // Split if any of the checks are true
-    doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit
+    doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
 
     // If we're splitting, send a debug message including results of all checks
     if doSplit
     {
         vars.debug("Split Detected: " + Convert.ToInt32(isLevelSplit) + Convert.ToInt32(isMapSplit) 
-                                    + Convert.ToInt32(isWarpSplit) + Convert.ToInt32(isFinalSplit))
+                                    + Convert.ToInt32(isWarpSplit) + Convert.ToInt32(isFinalSplit));
     }
 
     return doSplit;
@@ -221,9 +221,9 @@ split
 reset 
 {
     // Reset if we're at the title screen when we weren't before
-    doReset = settings["reset-title"] && old.level != "title" && current.level == "title"
+    doReset = settings["reset-title"] && old.level != "title" && current.level == "title";
 
-    if doReset ? vars.debug("Reset Detected")
+    if doReset ? vars.debug("Reset Detected");
 
     return doReset;
 }
