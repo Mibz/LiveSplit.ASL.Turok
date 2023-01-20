@@ -198,8 +198,7 @@ split
     bool isWarpSplit = settings["split-warps-anyp"] && 
                        old.warpId == -1 && current.warpId != -1 && 
                        vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
-    bool isFinalSplit = current.health > 0 && current.health <= 250 && // don't split if we died
-                        (old.level8BossHealth > 0 && current.level8BossHealth == 0) &&
+    bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
                         current.map == "levels/level00.map";
 
     return isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
