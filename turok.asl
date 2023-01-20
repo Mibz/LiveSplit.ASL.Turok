@@ -30,7 +30,7 @@ state("sobek", "1.4.6")
     int levelKeysRemaining: 0x286E7C, 0x40;
 }
 
-// current patch (2018-06-21 release)
+// current patch (2018-07-28 release)
 state("sobek", "2.0")
 {
     string40 level: 0x3AE25C, 0x0;
