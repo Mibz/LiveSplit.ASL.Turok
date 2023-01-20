@@ -43,6 +43,7 @@ state("sobek", "2.0")
 
 init
 {
+    // The version is found by checking how much memory the process reserves against known values
     int memSize = modules.First().ModuleMemorySize;
     version = "2.0";
     if (memSize == 0x2E8000) version = "1.4.3";
@@ -51,11 +52,7 @@ init
 
 startup 
 {
-    vars.mapSplits = new Dictionary<string, Dictionary<string, List<int>>>();
-    vars.mapsVisited = new Dictionary<string, Dictionary<string, int>>();
-    vars.warpSplits = new Dictionary<int, List<int>>();
-    vars.warpsVisited = new Dictionary<int, int>();
-
+    // Settings
     settings.Add("split-boss", true, "Split Boss Entrances");
     settings.Add("split-longhunter", true, "Longhunter", "split-boss");
     settings.Add("split-mantis", true, "Mantis", "split-boss");
@@ -68,6 +65,12 @@ startup
     settings.Add("reset-title", true, "Reset on Titlescreen", "misc");
     settings.SetToolTip("reset-title", "Disable this if you don't want the timer to reset if you game over");
 
+    vars.mapSplits = new Dictionary<string, Dictionary<string, List<int>>>(); // mapSplits[from][to][visitCount]
+    vars.mapsVisited = new Dictionary<string, Dictionary<string, int>>(); // mapsVisited[from][to]visitCount
+    vars.warpSplits = new Dictionary<int, List<int>>(); // warpSplits[warpId][visitCount]
+    vars.warpsVisited = new Dictionary<int, int>(); // warpsVisited[warpId]visitCount
+
+    // Split on a specific iteration of a specific map-to-map transition
     vars.trackMap = (Action<string, string, int>)((from, to, visit) =>
     {
         if (!vars.mapSplits.ContainsKey(from)) vars.mapSplits[from] = new Dictionary<string, List<int>>();
@@ -75,9 +78,22 @@ startup
         vars.mapSplits[from][to].Add(visit);
     });
 
+    // Split on a specific iteration of a specific warpId
+    vars.trackWarp = (Action<int, int>)((warpId, visit) => 
+    {
+        if (!vars.warpSplits.ContainsKey(warpId)) vars.warpSplits[warpId] = new List<int>();
+        vars.warpSplits[warpId].Add(visit);
+    });
+
+    // Split on the first iteration of a list of warpIds
+    vars.trackFirstWarps = (Action<int[]>)((warpIds) => 
+    {
+        foreach (var warpId in warpIds) vars.trackWarp(warpId, 1);
+    });
+
     vars.isMapSplit = (Func<string, string, bool>)((from, to) =>
     {
-        if (from == to) return false;
+        if (from == to) return false; // Our map hasn't changed
 
         // Track visit count to maps to prevent splitting on re-entry
         if (!vars.mapsVisited.ContainsKey(from)) vars.mapsVisited[from] = new Dictionary<string, int>();
@@ -88,17 +104,6 @@ startup
         return vars.mapSplits.ContainsKey(from) &&
                vars.mapSplits[from].ContainsKey(to) &&
                vars.mapSplits[from][to].Contains(visitCount);
-    });
-
-    vars.trackWarp = (Action<int, int>)((warpId, visit) => 
-    {
-        if (!vars.warpSplits.ContainsKey(warpId)) vars.warpSplits[warpId] = new List<int>();
-        vars.warpSplits[warpId].Add(visit);
-    });
-
-    vars.trackFirstWarps = (Action<int[]>)((warpIds) => 
-    {
-        foreach (var warpId in warpIds) vars.trackWarp(warpId, 1);
     });
 
     vars.isWarpSplit = (Func<int, int, bool>)((warpId, keysRemaining) => 
@@ -115,6 +120,7 @@ startup
                vars.warpSplits[warpId].Contains(visitCount);
     });
 
+    // Call this action to print debug messages, e.g. vars.debug("Split on warpId: " + warpId)
     vars.debug = (Action<string>)((msg) => print("[Turok ASL] " + msg));
 }
 
