@@ -220,13 +220,10 @@ split
 
 reset 
 {
-    // Are we at the title screen when we weren't before?
+    // Reset if we're at the title screen when we weren't before
     doReset = settings["reset-title"] && old.level != "title" && current.level == "title"
 
-    if doReset
-    {
-        vars.debug("Reset Detected")
-    }
+    if doReset ? vars.debug("Reset Detected")
 
     return doReset;
 }
