@@ -206,10 +206,10 @@ split
                         current.map == "levels/level00.map"; // Did we kill the Campaigner?
 
     // Split if any of the checks are true
-    doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
+    bool doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
 
     // If we're splitting, send a debug message including results of all checks
-    if doSplit
+    if (doSplit)
     {
         vars.debug("Split Detected: " + Convert.ToInt32(isLevelSplit) + Convert.ToInt32(isMapSplit) 
                                     + Convert.ToInt32(isWarpSplit) + Convert.ToInt32(isFinalSplit));
@@ -221,9 +221,12 @@ split
 reset 
 {
     // Reset if we're at the title screen when we weren't before
-    doReset = settings["reset-title"] && old.level != "title" && current.level == "title";
+    bool doReset = settings["reset-title"] && old.level != "title" && current.level == "title";
 
-    if doReset ? vars.debug("Reset Detected");
-
+    if (doReset)
+    {
+        vars.debug("Reset Detected");
+    }
+    
     return doReset;
 }
