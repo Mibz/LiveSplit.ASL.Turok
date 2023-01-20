@@ -148,13 +148,15 @@ start
 
     // Get number of splits
     int splitCount = timer.Run.Count();
+    vars.debug("splitCount: " + splitCount)
 
     // Any% Route Splits
     if (settings["split-warps-anyp"] && timer.Run.CategoryName.ToLower().Contains("any%"))
     {
-        // Beginner Route
         if (splitCount == 43)
         {
+            // Beginner Route
+            vars.debug("Any% Beginner Route detected")
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
@@ -172,6 +174,7 @@ start
         else
         {
             // Current Route
+            vars.debug("Any% Route detected")
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
@@ -193,18 +196,37 @@ start
 
 split 
 {
-    bool isLevelSplit = vars.isMapSplit(old.level, current.level);
-    bool isMapSplit = vars.isMapSplit(old.map, current.map);
+    // Check for a split
+    bool isLevelSplit = vars.isMapSplit(old.level, current.level); // Did we change levels?
+    bool isMapSplit = vars.isMapSplit(old.map, current.map); // Did we change maps?
     bool isWarpSplit = settings["split-warps-anyp"] && 
                        old.warpId == -1 && current.warpId != -1 && 
-                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
+                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Did we take a teleporter?
     bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
-                        current.map == "levels/level00.map";
+                        current.map == "levels/level00.map"; // Did we kill the Campaigner?
 
-    return isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
+    // Split if any of the checks are true
+    doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit
+
+    // If we're splitting, send a debug message including results of all checks
+    if doSplit
+    {
+        vars.debug("Split Detected: " + Convert.ToInt32(isLevelSplit) + Convert.ToInt32(isMapSplit) 
+                                    + Convert.ToInt32(isWarpSplit) + Convert.ToInt32(isFinalSplit))
+    }
+
+    return doSplit;
 }
 
 reset 
 {
-    return settings["reset-title"] && old.level != "title" && current.level == "title";
+    // Are we at the title screen when we weren't before?
+    doReset = settings["reset-title"] && old.level != "title" && current.level == "title"
+
+    if doReset
+    {
+        vars.debug("Reset Detected")
+    }
+
+    return doReset;
 }
