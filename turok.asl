@@ -39,28 +39,42 @@ state("sobek", "2.0")
     int level8BossHealth: 0x393118, 0xE0;
     int warpId: 0x49ED0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
+    byte level8Keys: 0x38E408, 0x414;
 }
 
 init
 {
     // The version is found by checking how much memory the process reserves against known values
     int memSize = modules.First().ModuleMemorySize;
-    version = "2.0";
+    print("Detected memSize: " + memSize);
     if (memSize == 0x2E8000) version = "1.4.3";
     else if (memSize == 0x2F4000) version = "1.4.6";
+    else if (memSize == 0x443000) version = "2.0";
+    else 
+    {
+        version = "2.0";
+        print("Couldn't detect version, defaulting to 2.0");
+    }
 }
 
 startup 
 {
     // Settings
+    settings.Add("split-keys", false, "Split on Keys");
+    settings.Add("split-keys-8", false, "Split on Level 8 keys", "split-keys");
+
+    settings.Add("split-level", true, "Split on New Level");
+
     settings.Add("split-boss", true, "Split Boss Entrances");
     settings.Add("split-longhunter", true, "Longhunter", "split-boss");
     settings.Add("split-mantis", true, "Mantis", "split-boss");
     settings.Add("split-thunder", true, "Thunder", "split-boss");
     settings.Add("split-campaigner", true, "Campaigner", "split-boss");
+
     settings.Add("subsplits", true, "Warp Subsplits");
-    settings.Add("split-warps-anyp", true, "Split Blue Planes (Any% Routes)", "subsplits");
-    settings.SetToolTip("split-warps-anyp", "Split Blue Planes for the Any% routes");
+    settings.Add("split-warps", true, "Split Blue Planes (Any% Routes)", "subsplits");
+    settings.SetToolTip("split-warps", "Split Blue Planes for the Any% routes");
+
     settings.Add("misc", true, "Misc");
     settings.Add("reset-title", true, "Reset on Titlescreen", "misc");
     settings.SetToolTip("reset-title", "Disable this if you don't want the timer to reset if you game over");
@@ -131,32 +145,53 @@ start
     vars.warpSplits.Clear();
     vars.warpsVisited.Clear();
     
-    // Always split when entering a new level for the first time
-    vars.trackMap("the hub", "the ancient city", 1);
-    vars.trackMap("the hub", "the jungle", 1);
-    vars.trackMap("the hub", "the ruins", 1);
-    vars.trackMap("the hub", "the catacombs", 1);
-    vars.trackMap("the hub", "the treetop village", 1);
-    vars.trackMap("the hub", "the lost land", 1);
-    vars.trackMap("the hub", "the final confrontation", 1);
-
-    // Split on bosses when enabled in settings
-    if (settings["split-longhunter"]) vars.trackMap("levels/level09.map", "levels/level48.map", 1);
-    if (settings["split-mantis"]) vars.trackMap("levels/level12.map", "levels/level49.map", 1);
-    if (settings["split-thunder"]) vars.trackMap("levels/level24.map", "levels/level03.map", 1);
-    if (settings["split-campaigner"]) vars.trackMap("levels/level25.map", "levels/level00.map", 1);
-
     // Get number of splits
     int splitCount = timer.Run.Count();
     vars.debug("splitCount: " + splitCount);
 
-    // Any% Route Splits
-    if (settings["split-warps-anyp"] && timer.Run.CategoryName.ToLower().Contains("any%"))
+    // // Split on bosses
+    // if (settings["split-boss"])
+    // {
+    //     vars.trackMap("levels/level09.map", "levels/level48.map", 1); // Longhunter
+    //     vars.trackMap("levels/level12.map", "levels/level49.map", 1); // Mantis
+    //     vars.trackMap("levels/level24.map", "levels/level03.map", 1); // Thunder
+    //     vars.trackMap("levels/level25.map", "levels/level00.map", 1); // Campaigner
+    // }
+    
+    // // Split when entering a new level for the first time
+    // if (settings["split-level"])
+    // {
+    //     vars.trackMap("the hub", "the ancient city", 1);
+    //     vars.trackMap("the hub", "the jungle", 1);
+    //     vars.trackMap("the hub", "the ruins", 1);
+    //     vars.trackMap("the hub", "the catacombs", 1);
+    //     vars.trackMap("the hub", "the treetop village", 1);
+    //     vars.trackMap("the hub", "the lost land", 1);
+    //     vars.trackMap("the hub", "the final confrontation", 1);
+    // }
+
+    // Randomizer Route
+    if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
     {
-        if (splitCount == 43)
+        vars.debug("Randomizer Route detected");
+
+        vars.trackMap("levels/level05.map", "levels/level21.map", 1); // Enter FC
+        vars.trackMap("levels/level21.map", "levels/level22.map", 1); // FC Portal 1
+        vars.trackMap("levels/level22.map", "levels/level23.map", 1); // FC Portal 2
+        vars.trackMap("levels/level23.map", "levels/level24.map", 1); // FC Portal 3
+        vars.trackMap("levels/level24.map", "levels/level03.map", 1); // Enter Thunder
+        vars.trackMap("levels/level25.map", "levels/level00.map", 1); // Campaigner
+    }
+
+    // Any% Route
+    else if (timer.Run.CategoryName.ToLower().Contains("any%"))
+    {
+
+
+        if (splitCount == 43) // Beginner Route
         {
-            // Beginner Route
             vars.debug("Any% Beginner Route detected");
+
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
@@ -171,9 +206,8 @@ start
             // Extras (2nd roof warp in lvl 3)
             vars.trackWarp(12041, 2);
         }
-        else
-        {
-            // Current Route
+        else // Current Route
+        {   
             vars.debug("Any% Route detected");
             vars.trackFirstWarps(new[] 
             {
@@ -190,6 +224,33 @@ start
             vars.trackWarp(12041, 2);
         }
     }
+    else // Unknown route
+    {
+        vars.debug("No known route found, splitting based on settings");
+
+        // Split on bosses
+        if (settings["split-longhunter"]) vars.trackMap("levels/level09.map", "levels/level48.map", 1);
+        if (settings["split-mantis"]) vars.trackMap("levels/level12.map", "levels/level49.map", 1);
+        if (settings["split-thunder"]) vars.trackMap("levels/level24.map", "levels/level03.map", 1);
+        if (settings["split-campaigner"]) vars.trackMap("levels/level25.map", "levels/level00.map", 1);
+
+        // Split on all teleporters
+        if (settings["split-warps"])
+        {
+            vars.trackFirstWarps(new[]
+            {
+                10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
+                12041, 12768, 12766, 12045, // Ancient City
+                11126, // Jungle
+                13731, 13734, 13735, 13313, 13450, // Ruins
+                14567, 14569, // Catacombs
+                15436, 15006, 15004, // Treetop Village
+                17301, 17304, 17900, 17634, 17501, // Lost Land 
+                18644, 18645, 18648 // Final Confrontation
+            });
+        }
+
+    }
 
     return old.level == "title" && current.level == "the hub";
 }
@@ -197,22 +258,24 @@ start
 split 
 {
     // Check for a split
-    bool isLevelSplit = vars.isMapSplit(old.level, current.level); // Did we change levels?
+    bool isLevelSplit = settings["split-level"] && vars.isMapSplit(old.level, current.level); // Did we change levels?
     bool isMapSplit = vars.isMapSplit(old.map, current.map); // Did we change maps?
-    bool isWarpSplit = settings["split-warps-anyp"] && 
+    bool isWarpSplit = settings["split-warps"] && 
                        old.warpId == -1 && current.warpId != -1 && 
                        vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Did we take a teleporter?
     bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
                         current.map == "levels/level00.map"; // Did we kill the Campaigner?
+    bool isKeySplit = settings["split-keys-8"] && (current.level8Keys > old.level8Keys); // Did we find a Level 8 Key?
 
     // Split if any of the checks are true
-    bool doSplit = isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit;
+    bool doSplit = (isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit || isKeySplit);
 
     // If we're splitting, send a debug message including results of all checks
     if (doSplit)
     {
-        vars.debug("Split Detected: " + Convert.ToInt32(isLevelSplit) + Convert.ToInt32(isMapSplit) 
-                                    + Convert.ToInt32(isWarpSplit) + Convert.ToInt32(isFinalSplit));
+        vars.debug("Split Detected: " + isLevelSplit + "," + isMapSplit + "," +
+                                        isWarpSplit + "," + isFinalSplit + "," +
+                                        isKeySplit);
     }
 
     return doSplit;
