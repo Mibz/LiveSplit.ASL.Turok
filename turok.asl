@@ -1,5 +1,5 @@
 // Auto-start, reset, and split upon entering each level (and optionally each boss)
-// Supports steam version, patches 1.4.3, 1.4.6 and 2.0. 
+// Supports Steam version, patches 1.4.3, 1.4.6 and 2.0. 
 
 // Last patch with jeep backstab (2015-12-18 release)
 // inside "TDH 1.1.7z" on speedrun.com or steam (steam://nav/console):
@@ -37,48 +37,51 @@ state("sobek", "2.0")
     string40 map: 0x38E3FC, 0x0;
     int health: 0x390CF4, 0xE0;
     int level8BossHealth: 0x393118, 0xE0;
-    int warpId: 0x49ED0; 
+    int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
     byte level8Keys: 0x38E408, 0x414;
 }
 
 init
 {
+    // Call this action to print debug messages, e.g. vars.debug("Split on warpId: " + warpId)
+    vars.debug = (Action<string>)((msg) => print("[Turok ASL] " + msg));
+
     // The version is found by checking how much memory the process reserves against known values
     int memSize = modules.First().ModuleMemorySize;
-    print("Detected memSize: " + memSize);
+    vars.debug("memSize: " + memSize);
     if (memSize == 0x2E8000) version = "1.4.3";
     else if (memSize == 0x2F4000) version = "1.4.6";
     else if (memSize == 0x443000) version = "2.0";
     else 
     {
         version = "2.0";
-        print("Couldn't detect version, defaulting to 2.0");
+        vars.debug("Couldn't detect version, defaulting to 2.0");
     }
 }
 
 startup 
 {
     // Settings
-    settings.Add("split-keys", false, "Split on Keys");
-    settings.Add("split-keys-8", false, "Split on Level 8 keys", "split-keys");
+    settings.Add("split-keys-8", false, "Split on Level 8 Keys");
+    settings.SetToolTip("split-keys-8", "Split on collection of Level 8 keys");
 
     settings.Add("split-level", true, "Split on New Level");
+    settings.SetToolTip("split-level", "Split on your first visit to a new level");
 
-    settings.Add("split-boss", true, "Split Boss Entrances");
+    settings.Add("split-boss", true, "Split on Boss Entrances");
     settings.Add("split-longhunter", true, "Longhunter", "split-boss");
     settings.Add("split-mantis", true, "Mantis", "split-boss");
     settings.Add("split-thunder", true, "Thunder", "split-boss");
     settings.Add("split-campaigner", true, "Campaigner", "split-boss");
 
-    settings.Add("subsplits", true, "Warp Subsplits");
-    settings.Add("split-warps", true, "Split Blue Planes (Any% Routes)", "subsplits");
-    settings.SetToolTip("split-warps", "Split Blue Planes for the Any% routes");
+    settings.Add("split-warps", true, "Split Teleporters");
+    settings.SetToolTip("split-warps", "Split on warps within maps");
 
-    settings.Add("misc", true, "Misc");
-    settings.Add("reset-title", true, "Reset on Titlescreen", "misc");
+    settings.Add("reset-title", true, "Reset on Titlescreen");
     settings.SetToolTip("reset-title", "Disable this if you don't want the timer to reset if you game over");
 
+    // Storage for desired map and warp splits
     vars.mapSplits = new Dictionary<string, Dictionary<string, List<int>>>(); // mapSplits[from][to][visitCount]
     vars.mapsVisited = new Dictionary<string, Dictionary<string, int>>(); // mapsVisited[from][to]visitCount
     vars.warpSplits = new Dictionary<int, List<int>>(); // warpSplits[warpId][visitCount]
@@ -105,6 +108,7 @@ startup
         foreach (var warpId in warpIds) vars.trackWarp(warpId, 1);
     });
 
+    // Return true if the current map transition is in vars.mapSplits
     vars.isMapSplit = (Func<string, string, bool>)((from, to) =>
     {
         if (from == to) return false; // Our map hasn't changed
@@ -120,6 +124,7 @@ startup
                vars.mapSplits[from][to].Contains(visitCount);
     });
 
+    // Return true if the current Warp ID is in vars.warpSplits
     vars.isWarpSplit = (Func<int, int, bool>)((warpId, keysRemaining) => 
     {
         // Edge case: always ignore the portal after double jump in treetop village unless we've picked up the key
@@ -133,9 +138,6 @@ startup
         return vars.warpSplits.ContainsKey(warpId) && 
                vars.warpSplits[warpId].Contains(visitCount);
     });
-
-    // Call this action to print debug messages, e.g. vars.debug("Split on warpId: " + warpId)
-    vars.debug = (Action<string>)((msg) => print("[Turok ASL] " + msg));
 }
 
 start 
@@ -145,53 +147,32 @@ start
     vars.warpSplits.Clear();
     vars.warpsVisited.Clear();
     
-    // Get number of splits
+    // Get number of splits to try and identify route
     int splitCount = timer.Run.Count();
     vars.debug("splitCount: " + splitCount);
-
-    // // Split on bosses
-    // if (settings["split-boss"])
-    // {
-    //     vars.trackMap("levels/level09.map", "levels/level48.map", 1); // Longhunter
-    //     vars.trackMap("levels/level12.map", "levels/level49.map", 1); // Mantis
-    //     vars.trackMap("levels/level24.map", "levels/level03.map", 1); // Thunder
-    //     vars.trackMap("levels/level25.map", "levels/level00.map", 1); // Campaigner
-    // }
-    
-    // // Split when entering a new level for the first time
-    // if (settings["split-level"])
-    // {
-    //     vars.trackMap("the hub", "the ancient city", 1);
-    //     vars.trackMap("the hub", "the jungle", 1);
-    //     vars.trackMap("the hub", "the ruins", 1);
-    //     vars.trackMap("the hub", "the catacombs", 1);
-    //     vars.trackMap("the hub", "the treetop village", 1);
-    //     vars.trackMap("the hub", "the lost land", 1);
-    //     vars.trackMap("the hub", "the final confrontation", 1);
-    // }
 
     // Randomizer Route
     if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
     {
-        vars.debug("Randomizer Route detected");
+        // Test on seed 49761. A full run with cheats is <5 minutes.
+        vars.debug("Randomizer Route detected. Ensure 'Split on Level 8 Keys' is enabled.");
 
-        vars.trackMap("levels/level05.map", "levels/level21.map", 1); // Enter FC
-        vars.trackMap("levels/level21.map", "levels/level22.map", 1); // FC Portal 1
-        vars.trackMap("levels/level22.map", "levels/level23.map", 1); // FC Portal 2
-        vars.trackMap("levels/level23.map", "levels/level24.map", 1); // FC Portal 3
-        vars.trackMap("levels/level24.map", "levels/level03.map", 1); // Enter Thunder
-        vars.trackMap("levels/level25.map", "levels/level00.map", 1); // Campaigner
+        vars.trackFirstWarps(new[] 
+        {
+            18000, // Enter FC
+            18644, 18645, 18648, // FC Portals
+            18997, // Enter Thunder
+            18998, // Exit Thunder
+        });
+        vars.trackMap("levels/level25.map", "levels/level00.map", 1); // Enter Campaigner
     }
 
     // Any% Route
     else if (timer.Run.CategoryName.ToLower().Contains("any%"))
     {
-
-
         if (splitCount == 43) // Beginner Route
         {
             vars.debug("Any% Beginner Route detected");
-
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
@@ -249,32 +230,34 @@ start
                 18644, 18645, 18648 // Final Confrontation
             });
         }
-
     }
 
+    // Start a run on the transition between title screen and Hub Ruins start.
+    // This works in the randomizer because it loads Hub Ruins prior to warping you
+    // to your random starting location
     return old.level == "title" && current.level == "the hub";
 }
 
 split 
 {
-    // Check for a split
     bool isLevelSplit = settings["split-level"] && vars.isMapSplit(old.level, current.level); // Did we change levels?
+
     bool isMapSplit = vars.isMapSplit(old.map, current.map); // Did we change maps?
-    bool isWarpSplit = settings["split-warps"] && 
-                       old.warpId == -1 && current.warpId != -1 && 
+
+    bool isWarpSplit = settings["split-warps"] && old.warpId == -1 && current.warpId != -1 &&
                        vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Did we take a teleporter?
+
     bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
                         current.map == "levels/level00.map"; // Did we kill the Campaigner?
+
     bool isKeySplit = settings["split-keys-8"] && (current.level8Keys > old.level8Keys); // Did we find a Level 8 Key?
 
     // Split if any of the checks are true
     bool doSplit = (isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit || isKeySplit);
-
-    // If we're splitting, send a debug message including results of all checks
     if (doSplit)
     {
-        vars.debug("Split Detected: " + isLevelSplit + "," + isMapSplit + "," +
-                                        isWarpSplit + "," + isFinalSplit + "," +
+        vars.debug("Split Detected. Level:" + isLevelSplit + " Map:" + isMapSplit + " Warp:" +
+                                        isWarpSplit + " Final:" + isFinalSplit + " Key:" +
                                         isKeySplit);
     }
 
