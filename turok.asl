@@ -223,9 +223,11 @@ start
             vars.trackWarp(12041, 2);
         }
     }
-    else // Unknown route
+
+    // Unknown route
+    else 
     {
-        vars.debug("No known route found, splitting based on Custom Route settings");
+        vars.debug("Unknown route, splitting based on Custom Route settings");
 
         // Split on Level 8 Keys
         if (settings["split-keys-8"]) vars.trackKeys = true;
@@ -292,13 +294,8 @@ split
 
 reset 
 {
-    // Reset if we're at the title screen when we weren't before
+    // Reset on the Titlescreen unless disabled in settings
     bool doReset = settings["reset-title"] && old.level != "title" && current.level == "title";
-
-    if (doReset)
-    {
-        vars.debug("Reset Detected");
-    }
-    
+    if (doReset) vars.debug("Resetting");
     return doReset;
 }
