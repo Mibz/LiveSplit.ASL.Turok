@@ -81,13 +81,15 @@ startup
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
 
-    settings.Add("split-map", false, "Split on Map Transition");
-    settings.SetToolTip("split-map", "Always split any time the map changes");
+    // TO-DO: Figure out how best to do this before re-enabling it
+    // settings.Add("split-map", false, "Split on Map Transition");
+    // settings.SetToolTip("split-map", "Always split any time the map changes");
 
     settings.Add("split-warp", false, "Split Teleporters");
     settings.SetToolTip("split-warp", "Always split on warps within maps");
     vars.splitAllWarps = false;
 
+    // I have no idea why these show up enabled by default in LiveSplit
     settings.Add("split-boss", false, "Split on Boss Entrances");
     settings.SetToolTip("split-boss", "Always split on boss entrances");
     settings.CurrentDefaultParent = null;
@@ -173,6 +175,7 @@ start
         vars.debug("Randomizer Route detected");
 
         vars.trackKeys = true;
+        vars.splitAllWarps = false;
         vars.trackFirstWarps(new[] 
         {
             18000, // Enter FC
@@ -186,19 +189,22 @@ start
     // Any% Route
     else if (timer.Run.CategoryName.ToLower().Contains("any%"))
     {
+        vars.splitAllWarps = false;
+
         if (splitCount == 43) // Beginner Route
         {
             vars.debug("Any% Beginner Route detected");
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
-                12041, 12768, 12766, 12045, // Ancient City
-                11126, // Jungle
-                13731, 13734, 13735, 13313, 13450, // Ruins
-                14567, 14569, // Catacombs
-                15436, 15006, 15004, // Treetop Village
-                17301, 17304, 17900, 17634, 17501, // Lost Land 
-                18644, 18645, 18648 // Final Confrontation
+                12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
+                11000, 11126, // Jungle
+                13000, 13731, 13734, 13735, 13313, 13450, // Ruins
+                14000, 14567, 14569, 14999, // Catacombs, Mantis
+                15000, 15436, 15006, 15004, // Treetop Village
+                17000, 17301, 17304, 17900, 17634, 17501, // Lost Land 
+                18000, 18644, 18645, 18648, // Final Confrontation
+                18997, 18999, // Thunder and Campaigner
             });
             vars.trackWarp(12041, 2); // 2nd roof warp in Ancient City
         }
@@ -208,16 +214,16 @@ start
             vars.trackFirstWarps(new[] 
             {
                 10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
-                12041, 12768, 12766, 12045, // Ancient City
-                11126, // Jungle
-                13731, 13734, 13735, 13313, 13450, // Ruins
-                14567, 14569, // Catacombs
-                15436, 15006, 15004, // Treetop Village
-                17301, 17304, 17900, 17634, 17501, // Lost Land 
-                18644, 18645, 18648 // Final Confrontation
+                12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
+                11000, 11126, // Jungle
+                13000, 13731, 13734, 13735, 13313, 13450, // Ruins
+                14000, 14567, 14569, 14999, // Catacombs, Mantis
+                15000, 15436, 15006, 15004, // Treetop Village
+                17000, 17301, 17304, 17900, 17634, 17501, // Lost Land 
+                18000, 18644, 18645, 18648, // Final Confrontation
+                18997, 18999, // Thunder and Campaigner
             });
-            // Extras (2nd roof warp in lvl 3)
-            vars.trackWarp(12041, 2);
+            vars.trackWarp(12041, 2); // 2nd roof warp in Ancient City
         }
     }
 
@@ -226,39 +232,32 @@ start
     {
         vars.debug("Unknown route, splitting based on Custom Route settings");
 
+        // Split on all warps
+        if (settings["split-warp"]) vars.splitAllWarps = true;
+
         // Split on Level 8 Keys
         if (settings["split-keys-8"]) vars.trackKeys = true;
 
-        // Split on each Hub->Level warp ID
+        // Split on the first visit to each map
+        // if (settings["split-map"])
+        // {
+        //     // TO-DO: What's the best way to do this?
+        // }
+
+        // Split on the first visit to each level
         if (settings["split-level"]) 
         {
             vars.trackFirstWarps(new[] 
             {
-                11000, 12000, 13000, 14000, 15000, 17000, 18000,
+                11000, 12000, 13000, 14000, 15000, 17000, 18000, // Hub->Level Warp IDs
             });
         }
     
         // Split on boss entrances
-        if (settings["split-longhunter"]) vars.trackMap("levels/level09.map", "levels/level48.map", 1);
-        if (settings["split-mantis"]) vars.trackMap("levels/level12.map", "levels/level49.map", 1);
-        if (settings["split-thunder"]) vars.trackMap("levels/level24.map", "levels/level03.map", 1);
-        if (settings["split-campaigner"]) vars.trackMap("levels/level25.map", "levels/level00.map", 1);
-
-        // Split on all teleporters
-        if (settings["split-warp"])
-        {
-            vars.trackFirstWarps(new[]
-            {
-                10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
-                12041, 12768, 12766, 12045, // Ancient City
-                11126, // Jungle
-                13731, 13734, 13735, 13313, 13450, // Ruins
-                14567, 14569, // Catacombs
-                15436, 15006, 15004, // Treetop Village
-                17301, 17304, 17900, 17634, 17501, // Lost Land 
-                18644, 18645, 18648 // Final Confrontation
-            });
-        }
+        if (settings["split-longhunter"]) vars.trackWarp(12998, 1);
+        if (settings["split-mantis"]) vars.trackWarp(14999, 1);
+        if (settings["split-thunder"]) vars.trackWarp(18997, 1);
+        if (settings["split-campaigner"]) vars.trackWarp(18999, 1);
     }
 
     // Start a run on the transition between title screen and Hub Ruins start.
@@ -269,22 +268,32 @@ start
 
 split 
 {
-    bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
-                        current.map == "levels/level00.map"; // Always split when we kill the Campaigner regardless of route
+    // Are we splitting on all warps or is this Warp ID being tracked?
+    bool isWarpSplit = vars.splitAllWarps ? true : old.warpId == -1 && current.warpId != -1 &&
+                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining); 
 
-    bool isMapSplit = vars.isMapSplit(old.map, current.map); // Is this map transition being tracked?
-    bool isLevelSplit = settings["split-level"] && vars.isMapSplit(old.level, current.level); // Is this our first time visiting a new level?
-    bool isWarpSplit = settings["split-warp"] && old.warpId == -1 && current.warpId != -1 &&
-                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Is this Warp ID being tracked?
-    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys); // Did we find a Level 8 Key?
+    // Did we find a Level 8 Key?
+    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys);
+
+    // Is this our first time visiting a new map?
+    // bool isMapSplit = settings["split-map"] && vars.isMapSplit(old.map, current.map);
+
+    // Is this our first time visiting a new level?
+    bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
+
+    // Always split when we kill the Campaigner, regardless of route
+    bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) && current.map == "levels/level00.map"; 
 
     // Split if any of the checks are true
-    bool doSplit = (isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit || isKeySplit);
+    bool doSplit = (isWarpSplit || isKeySplit || isLevelSplit || isFinalSplit );
     if (doSplit)
     {
-        vars.debug("Split Detected. Level:" + isLevelSplit + " Map:" + isMapSplit + " Warp:" +
-                                        isWarpSplit + " Final:" + isFinalSplit + " Key:" +
-                                        isKeySplit);
+        vars.debug("Split Detected." +
+                        " Warp:" + isWarpSplit + 
+                        " Key:" + isKeySplit +
+                        // " Map:" + isMapSplit + 
+                        " Level:" + isLevelSplit + 
+                        " Final:" + isFinalSplit);
     }
 
     return doSplit;
@@ -292,7 +301,7 @@ split
 
 reset 
 {
-    // Reset on the Titlescreen unless disabled in settings
+    // Reset on the Titlescreen
     bool doReset = settings["reset-title"] && old.level != "title" && current.level == "title";
     if (doReset) vars.debug("Resetting");
     return doReset;
