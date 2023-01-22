@@ -81,10 +81,6 @@ startup
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
 
-    // TO-DO: Figure out how best to do this before re-enabling it
-    // settings.Add("split-map", false, "Split on Map Transition");
-    // settings.SetToolTip("split-map", "Always split any time the map changes");
-
     settings.Add("split-warp", false, "Split Teleporters");
     settings.SetToolTip("split-warp", "Always split on warps within maps");
     vars.splitAllWarps = false;
@@ -238,12 +234,6 @@ start
         // Split on Level 8 Keys
         if (settings["split-keys-8"]) vars.trackKeys = true;
 
-        // Split on the first visit to each map
-        // if (settings["split-map"])
-        // {
-        //     // TO-DO: What's the best way to do this?
-        // }
-
         // Split on the first visit to each level
         if (settings["split-level"]) 
         {
@@ -275,9 +265,6 @@ split
     // Did we find a Level 8 Key?
     bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys);
 
-    // Is this our first time visiting a new map?
-    // bool isMapSplit = settings["split-map"] && vars.isMapSplit(old.map, current.map);
-
     // Is this our first time visiting a new level?
     bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
 
@@ -291,7 +278,6 @@ split
         vars.debug("Split Detected." +
                         " Warp:" + isWarpSplit + 
                         " Key:" + isKeySplit +
-                        // " Map:" + isMapSplit + 
                         " Level:" + isLevelSplit + 
                         " Final:" + isFinalSplit);
     }
