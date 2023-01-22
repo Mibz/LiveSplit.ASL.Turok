@@ -213,7 +213,7 @@ start
             vars.debug("Any% Route detected");
             vars.trackFirstWarps(new[] 
             {
-                10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
+                10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
                 12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
                 11000, 11126, // Jungle
                 13000, 13731, 13734, 13735, 13313, 13450, // Ruins
