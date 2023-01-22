@@ -10,7 +10,7 @@ state("sobek", "1.4.3")
     string40 level: 0x27D764, 0x0, 0x0;
     string40 map: 0x27D740, 0x0;
     int health: 0x27DA3C, 0xE0;
-    int level8BossHealth: 0x27DBD4, 0xE0;
+    int currentBossHealth: 0x27DBD4, 0xE0;
     int warpId: 0x27DF64; // -1 before/after warp, ID during warp
     int levelKeysRemaining: 0x27D764, 0x40;
     // 0x27D74C, (0x40)+(levelID*0x60) = int Keys remaining for levelID  (0x38E408, 0xC8 for v2.0 lvl 1)
@@ -25,7 +25,7 @@ state("sobek", "1.4.6")
     string40 level: 0x286E7C, 0x0, 0x0;
     string40 map: 0x286E58, 0x0;
     int health: 0x287154, 0xE0;
-    int level8BossHealth: 0x2872F0, 0xE0;
+    int currentBossHealth: 0x2872F0, 0xE0;
     int warpId: 0x287684;
     int levelKeysRemaining: 0x286E7C, 0x40;
 }
@@ -36,7 +36,7 @@ state("sobek", "2.0")
     string40 level: 0x3AE25C, 0x0;
     string40 map: 0x38E3FC, 0x0;
     int health: 0x390CF4, 0xE0;
-    int level8BossHealth: 0x393118, 0xE0;
+    int currentBossHealth: 0x393118, 0xE0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
     byte level8Keys: 0x38E408, 0x414;
@@ -269,7 +269,7 @@ split
     bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
 
     // Always split when we kill the Campaigner, regardless of route
-    bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) && current.map == "levels/level00.map"; 
+    bool isFinalSplit = (old.currentBossHealth > 0 && current.currentBossHealth <= 0) && current.map == "levels/level00.map"; 
 
     // Split if any of the checks are true
     bool doSplit = (isWarpSplit || isKeySplit || isLevelSplit || isFinalSplit );
