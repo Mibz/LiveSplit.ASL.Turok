@@ -80,14 +80,12 @@ startup
 
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
-    vars.splitAllLevels = false;
 
     settings.Add("split-map", false, "Split on Map Transition");
     settings.SetToolTip("split-map", "Always split any time the map changes");
-    vars.splitAllMaps = false;
 
-    settings.Add("split-warps", false, "Split Teleporters");
-    settings.SetToolTip("split-warps", "Always split on warps within maps");
+    settings.Add("split-warp", false, "Split Teleporters");
+    settings.SetToolTip("split-warp", "Always split on warps within maps");
     vars.splitAllWarps = false;
 
     settings.Add("split-boss", false, "Split on Boss Entrances");
@@ -202,8 +200,7 @@ start
                 17301, 17304, 17900, 17634, 17501, // Lost Land 
                 18644, 18645, 18648 // Final Confrontation
             });
-            // Extras (2nd roof warp in lvl 3)
-            vars.trackWarp(12041, 2);
+            vars.trackWarp(12041, 2); // 2nd roof warp in Ancient City
         }
         else // Current Route
         {   
@@ -248,7 +245,7 @@ start
         if (settings["split-campaigner"]) vars.trackMap("levels/level25.map", "levels/level00.map", 1);
 
         // Split on all teleporters
-        if (settings["split-warps"])
+        if (settings["split-warp"])
         {
             vars.trackFirstWarps(new[]
             {
@@ -272,13 +269,14 @@ start
 
 split 
 {
-    bool isMapSplit = vars.isMapSplit(old.map, current.map); // Did we change maps?
-    bool isLevelSplit = settings["split-level"] && vars.isMapSplit(old.level, current.level); // Did we change levels?
-    bool isWarpSplit = settings["split-warps"] && old.warpId == -1 && current.warpId != -1 &&
-                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Did we take a teleporter?
     bool isFinalSplit = (old.level8BossHealth > 0 && current.level8BossHealth <= 0) &&
-                        current.map == "levels/level00.map"; // Did we kill the Campaigner?
-    bool isKeySplit = settings["split-keys-8"] && (current.level8Keys > old.level8Keys); // Did we find a Level 8 Key?
+                        current.map == "levels/level00.map"; // Always split when we kill the Campaigner regardless of route
+
+    bool isMapSplit = vars.isMapSplit(old.map, current.map); // Is this map transition being tracked?
+    bool isLevelSplit = settings["split-level"] && vars.isMapSplit(old.level, current.level); // Is this our first time visiting a new level?
+    bool isWarpSplit = settings["split-warp"] && old.warpId == -1 && current.warpId != -1 &&
+                       vars.isWarpSplit(current.warpId, current.levelKeysRemaining); // Is this Warp ID being tracked?
+    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys); // Did we find a Level 8 Key?
 
     // Split if any of the checks are true
     bool doSplit = (isLevelSplit || isMapSplit || isWarpSplit || isFinalSplit || isKeySplit);
