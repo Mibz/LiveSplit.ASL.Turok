@@ -178,7 +178,7 @@ start
         vars.trackFirstWarps(new[] 
         {
             18000, // Enter FC
-            18644, 18645, 18648, // FC Portals
+            18644, 18645, 18648, // FC Portals 1, 2, 3
             18997, // Enter Thunder
             18998, // Exit Thunder
             18999, // Enter Campaigner
