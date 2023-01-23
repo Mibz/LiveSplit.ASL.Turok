@@ -1,10 +1,7 @@
-// Auto-start, reset, and split upon entering each level (and optionally each boss)
-// Supports Steam version, patches 1.4.3, 1.4.6 and 2.0. 
+// Turok: Remastered Auto-Splitter
+// Supports Steam version, patches 1.4.3, 1.4.6, and 2.0
 
-// Last patch with jeep backstab (2015-12-18 release)
-// inside "TDH 1.1.7z" on speedrun.com or steam (steam://nav/console):
-//   download_depot 405820 405822 305215209689250894 (Windows Files)
-//   download_depot 405820 405821 7171797334604885018 (Game Files)
+// 1.4.3 (2015-12-19)
 state("sobek", "1.4.3")
 {
     string40 level: 0x27D764, 0x0, 0x0;
@@ -13,13 +10,9 @@ state("sobek", "1.4.3")
     int currentBossHealth: 0x27DBD4, 0xE0;
     int warpId: 0x27DF64; // -1 before/after warp, ID during warp
     int levelKeysRemaining: 0x27D764, 0x40;
-    // 0x27D74C, (0x40)+(levelID*0x60) = int Keys remaining for levelID  (0x38E408, 0xC8 for v2.0 lvl 1)
-    // 0x27DA3C, 0x10 = position vector (float x, y, z)
-    // 0x27DA60 / 0x27DA64 = last checkpoint (int id / int map)
 }
 
-// download_depot 405820 405822 8016018477641840845
-// download_depot 405820 405821 5590148811806510379
+// 1.4.6 (2016-01-15)
 state("sobek", "1.4.6") 
 {
     string40 level: 0x286E7C, 0x0, 0x0;
@@ -30,7 +23,18 @@ state("sobek", "1.4.6")
     int levelKeysRemaining: 0x286E7C, 0x40;
 }
 
-// current patch (2018-07-28 release)
+// 1.4.7 (2016-02-23)
+state("sobek", "1.4.7") 
+{
+    string40 level: 0x286E7C, 0x0, 0x0;
+    string40 map: 0x25DEF0, 0x0;
+    int health: 0x287154, 0xE0;
+    int currentBossHealth: 0x2872F0, 0xE0;
+    int warpId: 0x287684;
+    int levelKeysRemaining: 0x286E7C, 0x40;
+}
+
+// 2.0 (2018-07-28 release)
 state("sobek", "2.0")
 {
     string40 level: 0x3AE25C, 0x0;
