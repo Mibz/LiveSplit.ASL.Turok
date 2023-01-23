@@ -1,5 +1,5 @@
 // Turok: Remastered Auto-Splitter
-// Supports Steam version, patches 1.4.3, 1.4.6, and 2.0
+// Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, and 2.0
 
 // 1.4.3 (2015-12-19)
 state("sobek", "1.4.3")
@@ -21,6 +21,17 @@ state("sobek", "1.4.6")
     int currentBossHealth: 0x2872F0, 0xE0;
     int warpId: 0x287684;
     int levelKeysRemaining: 0x286E7C, 0x40;
+}
+
+// 1.4.7 (2016-02-23)
+state("sobek", "1.4.7") 
+{
+    // string40 level: 0x286E7C, 0x0, 0x0;
+    string40 map: 0x25DEF0, 0x0;
+    int health: 0x25E1EC, 0xE0;
+    int currentBossHealth: 0x25E388, 0xE0;
+    int warpId: 0x43C9C, 0x0;
+    int levelKeysRemaining: 0x25DF14, 0x40;
 }
 
 // current patch (2018-07-28 release)
@@ -64,19 +75,6 @@ init
         version = "2.0";
         vars.debug("Couldn't detect version, defaulting to 2.0");
     }
-
-    // // The version is found by checking how much memory the process reserves against known values
-    // int memSize = modules.First().ModuleMemorySize;
-    // vars.debug("memSize: " + memSize);
-    // if (memSize == 0x2E8000) version = "1.4.3";
-    // else if (memSize == 0x2F4000) version = "1.4.6";
-    // else if (memSize == 0x443000) version = "2.0";
-    // else 
-    // {
-    //     version = "2.0";
-    //     vars.debug("Couldn't detect version, defaulting to 2.0");
-    // }
-}
 
 startup 
 {
