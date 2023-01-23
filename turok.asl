@@ -23,18 +23,7 @@ state("sobek", "1.4.6")
     int levelKeysRemaining: 0x286E7C, 0x40;
 }
 
-// 1.4.7 (2016-02-23)
-state("sobek", "1.4.7") 
-{
-    string40 level: 0x286E7C, 0x0, 0x0;
-    string40 map: 0x25DEF0, 0x0;
-    int health: 0x287154, 0xE0;
-    int currentBossHealth: 0x2872F0, 0xE0;
-    int warpId: 0x287684;
-    int levelKeysRemaining: 0x286E7C, 0x40;
-}
-
-// 2.0 (2018-07-28 release)
+// current patch (2018-07-28 release)
 state("sobek", "2.0")
 {
     string40 level: 0x3AE25C, 0x0;
