@@ -75,6 +75,7 @@ init
         version = "2.0";
         vars.debug("Couldn't detect version, defaulting to 2.0");
     }
+}
 
 startup 
 {
