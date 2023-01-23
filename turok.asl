@@ -48,9 +48,11 @@ init
     vars.debug = (Action<string>)((msg) => print("[Turok ASL] " + msg));
 
     // SHA1 checksums for known versions
-    vars.checksums = new Dictionary<string, string>();
+    var checksums = new Dictionary<string, string>();
+    checksums.Add("34-69-03-7C-0F-FB-13-1C-0B-85-4F-79-35-1A-4B-9B-FA-97-92-EC", "1.4.3");
     checksums.Add("0F-28-95-79-B0-F7-07-14-56-F5-49-02-41-92-D0-2E-D7-7B-D7-B0", "1.4.6");
-    checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0")
+    checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
+    checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
 
     // Get a SHA1 checksum of sobek.exe
     string processPath = modules.First().FileName;
@@ -59,7 +61,11 @@ init
     vars.debug("processHash: " + processHash);
 
     // Look for known checksums and set version accordingly
-    if (checksums.ContainsKey(processHash)) version = checksums[processHash];
+    if (checksums.ContainsKey(processHash))
+    {
+        version = checksums[processHash];
+        vars.debug("Version detected: " + version);
+    }
     else
     {
         version = "2.0";
