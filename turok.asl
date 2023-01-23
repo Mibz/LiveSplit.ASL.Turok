@@ -64,10 +64,13 @@ startup
 {
     // Settings
     // Settings defined here cannot be changed within code, only with the checkboxes within LiveSplit
-    // `vars.variableName` is declared for a setting to we can modify settings based on known routes
+    // `vars.variableName` is declared for a setting when we want to modify that setting within code (like a known route)
 
     settings.Add("reset-title", true, "Reset on Titlescreen");
-    settings.SetToolTip("reset-title", "Reset the run any time you enter the title screen. Disable this if you want the ability to continue from a save after a Game Over. Check the rules This setting has no impact on zombie-mode.");
+    settings.SetToolTip("reset-title", "Reset the run any time you enter the title screen. " +
+                                        "Disable this if you want the ability to continue from a save after a Game Over. " + 
+                                        "Check the rules for your category to make sure this is allowed. " +
+                                        "This setting has no impact on zombie mode.");
 
     // This parent is so people don't think they need to mess with settings to get known routes to work
     settings.Add("custom", false, "Custom Routes"); 
@@ -85,7 +88,6 @@ startup
     settings.SetToolTip("split-warp", "Always split on warps within maps");
     vars.splitAllWarps = false;
 
-    // I have no idea why these show up enabled by default in LiveSplit
     settings.Add("split-boss", false, "Split on Boss Entrances");
     settings.SetToolTip("split-boss", "Always split on boss entrances");
     settings.CurrentDefaultParent = null;
