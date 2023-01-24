@@ -206,7 +206,7 @@ start
     {
         vars.splitAllWarps = false;
 
-        if (splitCount == 43) // Beginner Route
+        if (timer.Run.CategoryName.ToLower().Contains("beginner")) // Beginner Route
         {
             vars.debug("Any% Beginner Route detected");
             vars.trackFirstWarps(new[] 
