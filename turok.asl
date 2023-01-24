@@ -232,7 +232,7 @@ start
                 12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
                 11000, 11126, // Jungle
                 13000, 13731, 13734, 13735, 13313, 13450, // Ruins
-                14000, 14567, 14569, 14999, // Catacombs, Mantis
+                14000, 14999, // Catacombs, Mantis
                 15000, 15436, 15006, 15004, // Treetop Village
                 17000, 17301, 17304, 17900, 17634, 17501, // Lost Land 
                 18000, 18644, 18645, 18648, // Final Confrontation
