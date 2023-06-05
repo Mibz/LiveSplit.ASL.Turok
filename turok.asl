@@ -1,22 +1,48 @@
 // Turok: Remastered Auto-Splitter
 // Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, and 2.0
 
+// Game State Variables
+/*
+    string255 level
+        The full name of the level, eg "the hub"
+    string255 map
+        The filename of the currently loaded map, eg "levels/level04.map"
+    int health
+        The PC's health value
+    int currentBossHealth
+        The health value of the boss currently being fought
+        This value cannot be trusted outside of boss arenas. I'm investigating pointers to specific boss health but this works for now.
+    int warpId
+        The current Warp ID
+        Warp ID can be thought of as the destination of the current warp. So taking the same teleporter back and forth will use two different Warp IDs.
+        Warp ID is always -1 when not warping and then populates with the proper ID during the warp
+        Splitting on Warp ID is currently preferred over Level and Map. It's more consistent and easier to route, especially for any%
+    int levelKeysRemaining
+        The number of keys remaining in the level
+        Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
+        This allows them to go back and get the key without screwing up their splits
+        Now that I've typed that out, is it really necessary?
+    byte level8Keys
+        Tracks which Level 8 keys have been collected
+        Used in Randomizer runs (hence why it's only in 2.0+) to allow splitting whenever a Level 8 key is found, regardless of order
+*/
+
 // 1.4.3 (2015-12-19)
 state("sobek", "1.4.3")
 {
-    string40 level: 0x27D764, 0x0, 0x0;
-    string40 map: 0x27D740, 0x0;
+    string255 level: 0x27D764, 0x0, 0x0;
+    string255 map: 0x27D740, 0x0;
     int health: 0x27DA3C, 0xE0;
     int currentBossHealth: 0x27DBD4, 0xE0;
-    int warpId: 0x27DF64; // -1 before/after warp, ID during warp
+    int warpId: 0x27DF64;
     int levelKeysRemaining: 0x27D764, 0x40;
 }
 
 // 1.4.6 (2016-01-15)
 state("sobek", "1.4.6") 
 {
-    string40 level: 0x286E7C, 0x0, 0x0;
-    string40 map: 0x286E58, 0x0;
+    string255 level: 0x286E7C, 0x0, 0x0;
+    string255 map: 0x286E58, 0x0;
     int health: 0x287154, 0xE0;
     int currentBossHealth: 0x2872F0, 0xE0;
     int warpId: 0x287684;
@@ -26,8 +52,8 @@ state("sobek", "1.4.6")
 // 1.4.7 (2016-02-23)
 state("sobek", "1.4.7") 
 {
-    // string40 level: 0x286E7C, 0x0, 0x0;
-    string40 map: 0x25DEF0, 0x0;
+    // string255 level: 0x286E7C, 0x0, 0x0;
+    string255 map: 0x25DEF0, 0x0;
     int health: 0x25E1EC, 0xE0;
     int currentBossHealth: 0x25E388, 0xE0;
     int warpId: 0x43C9C, 0x0;
@@ -37,8 +63,8 @@ state("sobek", "1.4.7")
 // current patch (2018-07-28 release)
 state("sobek", "2.0")
 {
-    string40 level: 0x3AE25C, 0x0;
-    string40 map: 0x38E3FC, 0x0;
+    string255 level: 0x3AE25C, 0x0;
+    string255 map: 0x38E3FC, 0x0;
     int health: 0x390CF4, 0xE0;
     int currentBossHealth: 0x393118, 0xE0;
     int warpId: 0x49ED0, 0x0; 
