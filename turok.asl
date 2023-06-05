@@ -1,5 +1,6 @@
 // Turok: Remastered Auto-Splitter
 // Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, and 2.0
+// For issues and support please join the Turok Speedrunning Discord at https://discord.gg/C8vczW2
 
 // Game State Variables
 /*
@@ -60,7 +61,7 @@ state("sobek", "1.4.7")
     int levelKeysRemaining: 0x25DF14, 0x40;
 }
 
-// current patch (2018-07-28 release)
+// current patch (2018-07-28)
 state("sobek", "2.0")
 {
     string255 level: 0x3AE25C, 0x0;
