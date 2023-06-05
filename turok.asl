@@ -179,9 +179,17 @@ start
     vars.warpSplits.Clear();
     vars.warpsVisited.Clear();
 
+    // We used to use number of splits to determine the route being run but I think 
+    // using the route name in time.Run.CategoryName is much more sustainable. It 
+    // avoids conflicts if two major routes ever end up having the same number of splits, 
+    // and makes troubleshooting a bit more human friendly.
+    // The old code is left commented out below just in case it's ever necessary again.
+
+    /*
     // Get number of splits to try and identify route
     int splitCount = timer.Run.Count();
     vars.debug("splitCount: " + splitCount);
+    */
 
     // Randomizer Route
     if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
