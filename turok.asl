@@ -18,6 +18,7 @@
         Warp ID can be thought of as the destination of the current warp. So taking the same teleporter back and forth will use two different Warp IDs.
         Warp ID is always -1 when not warping and then populates with the proper ID during the warp
         Splitting on Warp ID is currently preferred over Level and Map. It's more consistent and easier to route, especially for any%
+        A table of known Warp IDs is included in this repo as "warpIds.md". Its accuracy and/or completeness are not guaranteed.
     int levelKeysRemaining
         The number of keys remaining in the level
         Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
