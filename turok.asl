@@ -129,8 +129,8 @@ startup
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
 
-    settings.Add("split-warp", false, "Split Teleporters");
-    settings.SetToolTip("split-warp", "Always split on warps within maps");
+    settings.Add("split-warp", false, "Split on All Warps");
+    settings.SetToolTip("split-warp", "Always split on warps within maps, this includes duplicate warps");
     vars.splitAllWarps = false;
 
     settings.Add("split-boss", false, "Split on Boss Entrances");
