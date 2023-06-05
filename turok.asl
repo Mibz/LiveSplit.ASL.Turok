@@ -92,6 +92,7 @@ init
     vars.debug("processHash: " + processHash);
 
     // Look for known checksums and set version accordingly
+    // This check loops whenever a run is not in progress so it's normal and expected that your debug log is full of these messages
     if (checksums.ContainsKey(processHash))
     {
         version = checksums[processHash];
