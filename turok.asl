@@ -123,9 +123,9 @@ startup
     settings.SetToolTip("custom", "Customize your split settings. This will disable automatic route detection");
     settings.CurrentDefaultParent = "custom";
 
-    settings.Add("split-keys-8", false, "Split on Level 8 Keys");
-    settings.SetToolTip("split-keys-8", "Always split on collection of Level 8 keys");
-    vars.trackKeys = false;
+//    settings.Add("split-keys-8", false, "Split on Level 8 Keys");
+//    settings.SetToolTip("split-keys-8", "Always split on collection of Level 8 keys");
+//    vars.trackKeys = false;
 
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
@@ -229,7 +229,7 @@ start
         if (settings["split-warp"]) vars.splitAllWarps = true;
 
         // Split on Level 8 Keys
-        if (settings["split-keys-8"]) vars.trackKeys = true;
+//        if (settings["split-keys-8"]) vars.trackKeys = true;
 
         // Split on the first visit to each level
         if (settings["split-level"]) 
@@ -253,7 +253,7 @@ start
         // Test on seed 49761. A full run with cheats is <5 minutes.
         vars.debug("Randomizer Route detected");
 
-        vars.trackKeys = true;
+//        vars.trackKeys = true;
         vars.splitAllWarps = false;
         vars.trackFirstWarps(new[] 
         {
@@ -325,7 +325,7 @@ split
                        vars.isWarpSplit(current.warpId, current.levelKeysRemaining); 
 
     // Did we find a Level 8 Key?
-    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys);
+//    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys);
 
     // Is this our first time visiting a new level?
     bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
@@ -334,12 +334,13 @@ split
     bool isFinalSplit = (old.currentBossHealth > 0 && current.currentBossHealth <= 0) && current.map == "levels/level00.map"; 
 
     // Split if any of the checks are true
-    bool doSplit = (isWarpSplit || isKeySplit || isLevelSplit || isFinalSplit );
+//    bool doSplit = (isWarpSplit || isKeySplit || isLevelSplit || isFinalSplit );
+    bool doSplit = (isWarpSplit || isLevelSplit || isFinalSplit );
     if (doSplit)
     {
         vars.debug("Split Detected." +
                         " Warp:" + isWarpSplit + 
-                        " Key:" + isKeySplit +
+//                        " Key:" + isKeySplit +
                         " Level:" + isLevelSplit + 
                         " Final:" + isFinalSplit);
     }
