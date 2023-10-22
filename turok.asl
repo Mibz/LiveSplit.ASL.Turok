@@ -118,9 +118,9 @@ startup
                                         "Check the rules for your category to make sure this is allowed. " +
                                         "This setting has no impact on zombie mode.");
 
-    // This parent is so people don't think they need to mess with settings to get known routes to work
-    settings.Add("custom", false, "Custom Routes"); 
-    settings.SetToolTip("custom", "Adjust settings for a custom route. These will have no effect on recognized routes");
+    // Parent Custom Setting
+    settings.Add("custom", false, "Custom Splits"); 
+    settings.SetToolTip("custom", "Customize your split settings. This will disable automatic route detection");
     settings.CurrentDefaultParent = "custom";
 
     settings.Add("split-keys-8", false, "Split on Level 8 Keys");
@@ -220,8 +220,35 @@ start
     vars.debug("splitCount: " + splitCount);
     */
 
+    // Custom Splits
+    if (settings["custom"])
+    {
+        vars.debug("Using Custom Route settings");
+
+        // Split on all warps
+        if (settings["split-warp"]) vars.splitAllWarps = true;
+
+        // Split on Level 8 Keys
+        if (settings["split-keys-8"]) vars.trackKeys = true;
+
+        // Split on the first visit to each level
+        if (settings["split-level"]) 
+        {
+            vars.trackFirstWarps(new[] 
+            {
+                11000, 12000, 13000, 14000, 15000, 17000, 18000, // Hub->Level Warp IDs
+            });
+        }
+    
+        // Split on boss entrances
+        if (settings["split-longhunter"]) vars.trackWarp(12998, 1);
+        if (settings["split-mantis"]) vars.trackWarp(14999, 1);
+        if (settings["split-thunder"]) vars.trackWarp(18997, 1);
+        if (settings["split-campaigner"]) vars.trackWarp(18999, 1);
+    }
+
     // Randomizer Route
-    if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
+    else if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
     {
         // Test on seed 49761. A full run with cheats is <5 minutes.
         vars.debug("Randomizer Route detected");
@@ -282,28 +309,7 @@ start
     // Unknown route
     else 
     {
-        vars.debug("Unknown route, splitting based on Custom Route settings");
-
-        // Split on all warps
-        if (settings["split-warp"]) vars.splitAllWarps = true;
-
-        // Split on Level 8 Keys
-        if (settings["split-keys-8"]) vars.trackKeys = true;
-
-        // Split on the first visit to each level
-        if (settings["split-level"]) 
-        {
-            vars.trackFirstWarps(new[] 
-            {
-                11000, 12000, 13000, 14000, 15000, 17000, 18000, // Hub->Level Warp IDs
-            });
-        }
-    
-        // Split on boss entrances
-        if (settings["split-longhunter"]) vars.trackWarp(12998, 1);
-        if (settings["split-mantis"]) vars.trackWarp(14999, 1);
-        if (settings["split-thunder"]) vars.trackWarp(18997, 1);
-        if (settings["split-campaigner"]) vars.trackWarp(18999, 1);
+        vars.debug("Custom Splits not enabled and route not recognized. Only splitting on Campaigner death.");
     }
 
     // Start a run on the transition between title screen and Hub Ruins start.
