@@ -22,7 +22,7 @@
 */
 
 // 1.4.3 (2015-12-19)
-state("sobek", "1.4.3")
+state("sobek_Shipping_Steam_x64", "1.4.3")
 {
     string255 map: 0x27D740, 0x0;
     int warpId: 0x67DF64, 0x0;
@@ -31,7 +31,7 @@ state("sobek", "1.4.3")
 }
 
 // 1.4.6 (2016-01-15)
-state("sobek", "1.4.6") 
+state("sobek_Shipping_Steam_x64", "1.4.6") 
 {
     string255 map: 0x286E58, 0x0;
     int warpId: 0x287684;
@@ -40,7 +40,7 @@ state("sobek", "1.4.6")
 }
 
 // 1.4.7 (2016-02-23)
-state("sobek", "1.4.7") 
+state("sobek_Shipping_Steam_x64", "1.4.7") 
 {
     string255 map: 0x25DEF0, 0x0;
     int warpId: 0x43C9C, 0x0;
@@ -49,7 +49,7 @@ state("sobek", "1.4.7")
 }
 
 // 2.0 Pre-3.0 Release (2018-07-28)
-state("sobek", "2.0_legacy")
+state("sobek_Shipping_Steam_x64", "2.0_legacy")
 {
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
