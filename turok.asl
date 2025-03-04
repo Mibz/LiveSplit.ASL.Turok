@@ -17,7 +17,7 @@
         Tracks which Level 8 keys have been collected
         Used in Randomizer runs (hence why it's only in 2.0) to allow splitting whenever a Level 8 key is found, regardless of order
     byte inCinematic
-        I'm not entirely sure whether this flag is for cinematics, but it seems to be 0 during normal gameplay and 1 during cinematics
+        I'm not entirely sure whether this flag is for cinematics, but it seems to always be 0 during normal gameplay and 1 during cinematics
         Used to signal the final split after campaigner death since I can't figure out how to reliably track boss deaths
 */
 
@@ -25,8 +25,9 @@
 state("sobek", "1.4.3")
 {
     string255 map: 0x27D740, 0x0;
-    int warpId: 0x27DF64;
-    int levelKeysRemaining: 0x27D764, 0x40;
+    int warpId: 0x67DF64, 0x0;
+    byte levelKeysRemaining: 0x27D764, 0x40;
+    byte inCinematic: 0x67DA9C, 0x0;
 }
 
 // 1.4.6 (2016-01-15)
@@ -35,15 +36,16 @@ state("sobek", "1.4.6")
     string255 map: 0x286E58, 0x0;
     int warpId: 0x287684;
     int levelKeysRemaining: 0x286E7C, 0x40;
+    //byte inCinematic: 0x765A90, 0xAC8;
 }
 
 // 1.4.7 (2016-02-23)
 state("sobek", "1.4.7") 
 {
-    // string255 level: 0x286E7C, 0x0, 0x0;
     string255 map: 0x25DEF0, 0x0;
     int warpId: 0x43C9C, 0x0;
     int levelKeysRemaining: 0x25DF14, 0x40;
+    //byte inCinematic: 0x765A90, 0xAC8;
 }
 
 // 2.0 Pre-3.0 Release (2018-07-28)
@@ -52,6 +54,7 @@ state("sobek", "2.0_legacy")
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
+    //byte inCinematic: 0x765A90, 0xAC8;
     byte level8Keys: 0x38E408, 0x414;
 }
 
@@ -60,9 +63,9 @@ state("sobek_Shipping_Steam_x64", "2.0")
 {
     //string255 map: 0xAD62E0, 0x0;
     //int warpId: 0xAAE038, 0x950; 
-    //byte level8Keys: 0x38E408, 0x414;
     //int levelKeysRemaining: 0xAD6328, 0x8C; 
     //byte inCinematic: 0x765A90, 0xAC8;
+    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.857 (2025-02-28)
@@ -70,9 +73,9 @@ state("sobek_Shipping_Steam_x64", "3.0.857")
 {
     string255 map: 0xAD62E0, 0x0;
     int warpId: 0xAAE038, 0x950; 
-    //byte level8Keys: 0x38E408, 0x414;
     int levelKeysRemaining: 0xAD6328, 0x8C; 
     byte inCinematic: 0x765A90, 0xAC8;
+    //byte level8Keys: 0x38E408, 0x414;
 }
 
 init
