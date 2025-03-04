@@ -61,11 +61,11 @@ state("sobek_Shipping_Steam_x64", "2.0_legacy")
 // 2.0 Post-3.0 Release (2025-02-28)
 state("sobek_Shipping_Steam_x64", "2.0")
 {
-    //string255 map: 0xAD62E0, 0x0;
-    //int warpId: 0xAAE038, 0x950; 
-    //int levelKeysRemaining: 0xAD6328, 0x8C; 
-    //byte inCinematic: 0x765A90, 0xAC8;
-    //byte level8Keys: 0x38E408, 0x414;
+    string255 map: 0x3B45AC, 0x0;
+    int warpId: 0x50010, 0x0; 
+    int levelKeysRemaining: 0x3B45D8, 0x50; 
+    byte inCinematic: 0x2BC54, 0x0;
+    byte level8Keys: 0x3B45B8, 0x414;
 }
 
 // 3.0.857 (2025-02-28)
