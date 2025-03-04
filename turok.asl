@@ -34,9 +34,9 @@ state("sobek_Shipping_Steam_x64", "1.4.3")
 state("sobek_Shipping_Steam_x64", "1.4.6") 
 {
     string255 map: 0x286E58, 0x0;
-    int warpId: 0x287684;
-    int levelKeysRemaining: 0x286E7C, 0x40;
-    //byte inCinematic: 0x765A90, 0xAC8;
+    int warpId: 0x43BCC, 0x0;
+    byte levelKeysRemaining: 0x286E7C, 0x40;
+    byte inCinematic: 0x287E0, 0x0;
 }
 
 // 1.4.7 (2016-02-23)
