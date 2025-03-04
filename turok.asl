@@ -8,11 +8,6 @@
         The full name of the level, eg "the hub"
     string255 map
         The filename of the currently loaded map, eg "levels/level04.map"
-    int health
-        The PC's health value
-    int currentBossHealth
-        The health value of the boss currently being fought
-        This value cannot be trusted outside of boss arenas. I'm investigating pointers to specific boss health but this works for now.
     int warpId
         The current Warp ID
         Warp ID can be thought of as the destination of the current warp. So taking the same teleporter back and forth will use two different Warp IDs.
@@ -34,8 +29,6 @@ state("sobek", "1.4.3")
 {
     string255 level: 0x27D764, 0x0, 0x0;
     string255 map: 0x27D740, 0x0;
-    int health: 0x27DA3C, 0xE0;
-    int currentBossHealth: 0x27DBD4, 0xE0;
     int warpId: 0x27DF64;
     int levelKeysRemaining: 0x27D764, 0x40;
 }
@@ -45,8 +38,6 @@ state("sobek", "1.4.6")
 {
     string255 level: 0x286E7C, 0x0, 0x0;
     string255 map: 0x286E58, 0x0;
-    int health: 0x287154, 0xE0;
-    int currentBossHealth: 0x2872F0, 0xE0;
     int warpId: 0x287684;
     int levelKeysRemaining: 0x286E7C, 0x40;
 }
@@ -56,33 +47,27 @@ state("sobek", "1.4.7")
 {
     // string255 level: 0x286E7C, 0x0, 0x0;
     string255 map: 0x25DEF0, 0x0;
-    int health: 0x25E1EC, 0xE0;
-    int currentBossHealth: 0x25E388, 0xE0;
     int warpId: 0x43C9C, 0x0;
     int levelKeysRemaining: 0x25DF14, 0x40;
 }
 
-// 2.0 (2018-07-28)
-state("sobek", "2.0")
+// 2.0 Pre-3.0 Release (2018-07-28)
+state("sobek", "2.0_legacy")
 {
     string255 level: 0x3AE25C, 0x0;
     string255 map: 0x38E3FC, 0x0;
-    int health: 0x390CF4, 0xE0;
-    int currentBossHealth: 0x393118, 0xE0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
     byte level8Keys: 0x38E408, 0x414;
 }
 
-// 3.0.857 (2025-02-28)
-state("sobek_Shipping_Steam_x64", "3.0.857")
+// 2.0 Post-3.0 Release (2025-02-28)
+state("sobek_Shipping_Steam_x64", "2.0")
 {
     string255 map: 0xAD62E0, 0x0;
     int warpId: 0xAAE038, 0x950; 
-    int currentBossHealth: 0x762270, 0x60, 0xEF4;
     //byte level8Keys: 0x38E408, 0x414;
     int levelKeysRemaining: 0xAD6328, 0x8C; 
-    int health: 0xBB5FF0, 0x58;
     byte inCinematic: 0x765A90, 0xAC8;
 }
 
