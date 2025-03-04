@@ -4,8 +4,6 @@
 
 // Game State Variables
 /*
-    string255 level
-        The full name of the level, eg "the hub"
     string255 map
         The filename of the currently loaded map, eg "levels/level04.map"
     int warpId
@@ -27,7 +25,6 @@
 // 1.4.3 (2015-12-19)
 state("sobek", "1.4.3")
 {
-    string255 level: 0x27D764, 0x0, 0x0;
     string255 map: 0x27D740, 0x0;
     int warpId: 0x27DF64;
     int levelKeysRemaining: 0x27D764, 0x40;
@@ -36,7 +33,6 @@ state("sobek", "1.4.3")
 // 1.4.6 (2016-01-15)
 state("sobek", "1.4.6") 
 {
-    string255 level: 0x286E7C, 0x0, 0x0;
     string255 map: 0x286E58, 0x0;
     int warpId: 0x287684;
     int levelKeysRemaining: 0x286E7C, 0x40;
@@ -54,7 +50,6 @@ state("sobek", "1.4.7")
 // 2.0 Pre-3.0 Release (2018-07-28)
 state("sobek", "2.0_legacy")
 {
-    string255 level: 0x3AE25C, 0x0;
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
