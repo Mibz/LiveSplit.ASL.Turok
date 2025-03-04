@@ -54,7 +54,7 @@ state("sobek_Shipping_Steam_x64", "2.0_legacy")
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
-    //byte inCinematic: 0x765A90, 0xAC8;
+    byte inCinematic: 0x25EB4, 0x0;
     byte level8Keys: 0x38E408, 0x414;
 }
 
