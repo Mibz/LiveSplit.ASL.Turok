@@ -1,5 +1,5 @@
 // Turok: Remastered Auto-Splitter
-// Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, and 2.0
+// Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, 2.0, and 3.0
 // For issues and support please join the Turok Speedrunning Discord at https://discord.gg/C8vczW2
 
 // Game State Variables
@@ -9,17 +9,16 @@
     int warpId
         The current Warp ID
         Warp ID can be thought of as the destination of the current warp. So taking the same teleporter back and forth will use two different Warp IDs.
-        Warp ID is always -1 when not warping and then populates with the proper ID during the warp
-        Splitting on Warp ID is currently preferred over Level and Map. It's more consistent and easier to route, especially for any%
-        A table of known Warp IDs is included in this repo as "warpIds.md". Its accuracy and/or completeness are not guaranteed.
+        Warp ID is always -1 when not warping and then populates with the appropriate ID during the warp
     int levelKeysRemaining
         The number of keys remaining in the level
         Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
-        This allows them to go back and get the key without screwing up their splits
-        Now that I've typed that out, is it really necessary?
     byte level8Keys
         Tracks which Level 8 keys have been collected
-        Used in Randomizer runs (hence why it's only in 2.0+) to allow splitting whenever a Level 8 key is found, regardless of order
+        Used in Randomizer runs (hence why it's only in 2.0) to allow splitting whenever a Level 8 key is found, regardless of order
+    byte inCinematic
+        I'm not entirely sure whether this flag is for cinematics, but it seems to be 0 during normal gameplay and 1 during cinematics
+        Used to signal the final split after campaigner death since I can't figure out how to reliably track boss deaths
 */
 
 // 1.4.3 (2015-12-19)
