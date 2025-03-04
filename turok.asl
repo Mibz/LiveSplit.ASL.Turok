@@ -45,7 +45,7 @@ state("sobek_Shipping_Steam_x64", "1.4.7")
     string255 map: 0x25DEF0, 0x0;
     int warpId: 0x43C9C, 0x0;
     int levelKeysRemaining: 0x25DF14, 0x40;
-    //byte inCinematic: 0x765A90, 0xAC8;
+    byte inCinematic: 0x286A0, 0x0;
 }
 
 // 2.0 Pre-3.0 Release (2018-07-28)
