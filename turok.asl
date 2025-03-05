@@ -342,7 +342,7 @@ start
 split 
 {
     // Are we splitting on all warps or is this Warp ID being tracked?
-    bool isWarpSplit = vars.splitAllWarps ? old.warpId == -1 && current.warpId != -1 :
+    bool isWarpSplit = vars.splitAllWarps ? old.warpId == -1 && current.warpId > 0 :
                         old.warpId == -1 && current.warpId != -1 && vars.isWarpSplit(current.warpId, current.levelKeysRemaining); 
 
     // Did we find a Level 8 Key?
@@ -365,7 +365,7 @@ split
     if (doSplit)
     {
         vars.debug("Split Detected." +
-                        " Warp:" + isWarpSplit + 
+                        " Warp:" + isWarpSplit + " " + current.warpId +
 //                        " Key:" + isKeySplit +
                         " Level:" + isLevelSplit + 
                         " Final:" + isFinalSplit);
