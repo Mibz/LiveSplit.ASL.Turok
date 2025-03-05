@@ -248,7 +248,7 @@ start
         //vars.debug("Using Custom Route settings");
 
         // Split on all warps
-        if (settings["split-warp"]) vars.splitAllWarps = true;
+        vars.splitAllWarps = settings["split-warp"];
 
         // Split on Level 8 Keys
 //        if (settings["split-keys-8"]) vars.trackKeys = true;
