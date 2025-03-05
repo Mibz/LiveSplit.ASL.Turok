@@ -245,7 +245,7 @@ start
     // Custom Splits
     if (settings["custom"])
     {
-        vars.debug("Using Custom Route settings");
+        //vars.debug("Using Custom Route settings");
 
         // Split on all warps
         if (settings["split-warp"]) vars.splitAllWarps = true;
