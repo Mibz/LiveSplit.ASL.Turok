@@ -6,16 +6,18 @@
 /*
     string255 map
         The filename of the currently loaded map, eg "levels/level04.map"
+        Used to track the start of a run, final split, and resetting on the title screen.
     int warpId
         The current Warp ID
-        Warp ID can be thought of as the destination of the current warp. So taking the same teleporter back and forth will use two different Warp IDs.
-        Warp ID is always -1 when not warping and then populates with the appropriate ID during the warp
+        ID of the current in-progress warp
+        IDs are directional so a round-trip between the same portals will have two unique IDs
+        Warp ID is always -1 when not actively warping
     int levelKeysRemaining
         The number of keys remaining in the level
         Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
     byte level8Keys
         Tracks which Level 8 keys have been collected
-        Used in Randomizer runs (hence why it's only in 2.0) to allow splitting whenever a Level 8 key is found, regardless of order
+        Used in Randomizer runs (hence why it's only in 2.0+) to allow splitting whenever a Level 8 key is found, regardless of order
     byte inCinematic
         I'm not entirely sure whether this flag is for cinematics, but it seems to always be 0 during normal gameplay and 1 during cinematics
         Used to signal the final split after campaigner death since I can't figure out how to reliably track boss deaths
