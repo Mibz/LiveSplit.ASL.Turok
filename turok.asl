@@ -119,7 +119,7 @@ init
     else
     {
         version = "3.0.857";
-        vars.debug("Couldn't detect version, defaulting to latest known");
+        vars.debug("Couldn't detect version, defaulting to latest release");
     }
 }
 
