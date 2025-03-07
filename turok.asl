@@ -159,19 +159,9 @@ startup
     settings.Add("split-thunder", false, "Thunder", "split-boss");
     settings.Add("split-campaigner", false, "Campaigner", "split-boss");
 
-    // Storage for desired map and warp splits
-    vars.mapSplits = new Dictionary<string, Dictionary<string, List<int>>>(); // mapSplits[from][to][visitCount]
-    vars.mapsVisited = new Dictionary<string, Dictionary<string, int>>(); // mapsVisited[from][to]visitCount
+    // Storage for desired warp splits
     vars.warpSplits = new Dictionary<int, List<int>>(); // warpSplits[warpId][visitCount]
     vars.warpsVisited = new Dictionary<int, int>(); // warpsVisited[warpId]visitCount
-
-    // Track a specific iteration of a specific map-to-map transition
-    vars.trackMap = (Action<string, string, int>)((from, to, visit) =>
-    {
-        if (!vars.mapSplits.ContainsKey(from)) vars.mapSplits[from] = new Dictionary<string, List<int>>();
-        if (!vars.mapSplits[from].ContainsKey(to)) vars.mapSplits[from][to] = new List<int>();
-        vars.mapSplits[from][to].Add(visit);
-    });
 
     // Track a specific iteration of a specific warpId
     vars.trackWarp = (Action<int, int>)((warpId, visit) => 
@@ -184,22 +174,6 @@ startup
     vars.trackFirstWarps = (Action<int[]>)((warpIds) => 
     {
         foreach (var warpId in warpIds) vars.trackWarp(warpId, 1);
-    });
-
-    // Return true if the current map transition is in vars.mapSplits
-    vars.isMapSplit = (Func<string, string, bool>)((from, to) =>
-    {
-        if (from == to) return false; // Our map hasn't changed
-
-        // Track visit count to maps to prevent splitting on re-entry
-        if (!vars.mapsVisited.ContainsKey(from)) vars.mapsVisited[from] = new Dictionary<string, int>();
-        int visitCount = 0;
-        vars.mapsVisited[from].TryGetValue(to, out visitCount);
-        vars.mapsVisited[from][to] = ++visitCount;
-
-        return vars.mapSplits.ContainsKey(from) &&
-               vars.mapSplits[from].ContainsKey(to) &&
-               vars.mapSplits[from][to].Contains(visitCount);
     });
 
     // Return true if the current Warp ID is in vars.warpSplits
@@ -223,8 +197,6 @@ startup
 
 start 
 {
-    vars.mapSplits.Clear();
-    vars.mapsVisited.Clear();
     vars.warpSplits.Clear();
     vars.warpsVisited.Clear();
 
