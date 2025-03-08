@@ -137,29 +137,22 @@ startup
                                         "Check the rules for your category to make sure this is allowed. " +
                                         "This setting has no impact on zombie mode.");
 
-    // Parent Custom Setting
-    settings.Add("custom", false, "Custom Splits"); 
-    settings.SetToolTip("custom", "Customize your split settings. This will disable automatic route detection");
-    settings.CurrentDefaultParent = "custom";
-
-//    settings.Add("split-keys-8", false, "Split on Level 8 Keys");
-//    settings.SetToolTip("split-keys-8", "Always split on collection of Level 8 keys");
-//    vars.trackKeys = false;
+    settings.Add("split-warp", true, "Split on All Warps");
+    settings.SetToolTip("split-warp", "Always split on warps within maps, this includes duplicate warps");
 
     settings.Add("split-level", false, "Split on New Level");
     settings.SetToolTip("split-level", "Always split on your first visit to a new level");
 
-    settings.Add("split-warp", false, "Split on All Warps");
-    settings.SetToolTip("split-warp", "Always split on warps within maps, this includes duplicate warps");
-    vars.splitAllWarps = false;
-
     settings.Add("split-boss", false, "Split on Boss Entrances");
     settings.SetToolTip("split-boss", "Always split on boss entrances");
-    settings.CurrentDefaultParent = null;
     settings.Add("split-longhunter", false, "Longhunter", "split-boss");
     settings.Add("split-mantis", false, "Mantis", "split-boss");
     settings.Add("split-thunder", false, "Thunder", "split-boss");
     settings.Add("split-campaigner", false, "Campaigner", "split-boss");
+
+//    settings.Add("split-keys-8", false, "Split on Level 8 Keys");
+//    settings.SetToolTip("split-keys-8", "Always split on collection of Level 8 keys");
+//    vars.trackKeys = false;
 
     // Storage for desired warp splits
     vars.warpSplits = new Dictionary<int, List<int>>(); // warpSplits[warpId][visitCount]
@@ -201,112 +194,54 @@ start
 {
     vars.warpSplits.Clear();
     vars.warpsVisited.Clear();
-
     vars.finalSplitDone = false;
+    vars.splittingOn = new List<string>();
 
-    // We used to use number of splits to determine the route being run but I think 
-    // using the route name in time.Run.CategoryName is much more sustainable. It 
-    // avoids conflicts if two major routes ever end up having the same number of splits, 
-    // and makes troubleshooting a bit more human friendly.
-    // The old code is left commented out below just in case it's ever necessary again.
+    // Split on all warps
+    if (settings["split-warp"]) vars.splittingOn.Add("All Warps");
 
-    /*
-    // Get number of splits to try and identify route
-    int splitCount = timer.Run.Count();
-    vars.debug("splitCount: " + splitCount);
-    */
-
-    // Custom Splits
-    if (settings["custom"])
+    // Split on the first visit to each level
+    if (settings["split-level"]) 
     {
-        //vars.debug("Using Custom Route settings");
-
-        // Split on all warps
-        vars.splitAllWarps = settings["split-warp"];
-
-        // Split on Level 8 Keys
-//        if (settings["split-keys-8"]) vars.trackKeys = true;
-
-        // Split on the first visit to each level
-        if (settings["split-level"]) 
-        {
-            vars.trackFirstWarps(new[] 
-            {
-                11000, 12000, 13000, 14000, 15000, 17000, 18000, // Hub->Level Warp IDs
-            });
-        }
-    
-        // Split on boss entrances
-        if (settings["split-longhunter"]) vars.trackWarp(12998, 1);
-        if (settings["split-mantis"]) vars.trackWarp(14999, 1);
-        if (settings["split-thunder"]) vars.trackWarp(18997, 1);
-        if (settings["split-campaigner"]) vars.trackWarp(18999, 1);
-    }
-
-    // Randomizer Route
-    else if (timer.Run.CategoryName.ToLower().Contains("randomizer"))
-    {
-        // Test on seed 49761. A full run with cheats is <5 minutes.
-        // vars.debug("Randomizer Route detected");
-
-//        vars.trackKeys = true;
-        vars.splitAllWarps = false;
         vars.trackFirstWarps(new[] 
         {
-            18000, // Enter FC
-            18644, 18645, 18648, // FC Portals 1, 2, 3
-            18997, // Enter Thunder
-            18998, // Exit Thunder
-            18999, // Enter Campaigner
+            11000, 12000, 13000, 14000, 15000, 17000, 18000, // Hub->Level Warp IDs
         });
+        vars.splittingOn.Add("Levels");
     }
 
-    // Any% Route
-    else if (timer.Run.CategoryName.ToLower().Contains("any%"))
-    {
-        vars.splitAllWarps = false;
-
-        if (timer.Run.CategoryName.ToLower().Contains("beginner")) // Beginner Route
-        {
-            // vars.debug("Any% Beginner Route detected");
-            vars.trackFirstWarps(new[] 
-            {
-                10201, 10207, 10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
-                12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
-                11000, 11126, // Jungle
-                13000, 13731, 13734, 13735, 13313, 13450, // Ruins
-                14000, 14567, 14569, 14999, // Catacombs, Mantis
-                15000, 15436, 15006, 15004, // Treetop Village
-                17000, 17301, 17304, 17900, 17634, 17501, // Lost Land 
-                18000, 18644, 18645, 18648, // Final Confrontation
-                18997, 18999, // Thunder and Campaigner
-            });
-            vars.trackWarp(12041, 2); // 2nd roof warp in Ancient City
-        }
-        else // Current Route
-        {   
-            // vars.debug("Any% Route detected");
-            vars.trackFirstWarps(new[] 
-            {
-                10203, 10205, 10206, 10208, 10209, 10210, 10211, // Hub Ruins
-                12000, 12041, 12768, 12766, 12045, 12998, // Ancient City, Longhunter
-                11000, 11126, // Jungle
-                13000, 13731, 13734, 13735, 13313, 13450, // Ruins
-                14000, 14999, // Catacombs, Mantis
-                15000, 15436, 15006, 15004, // Treetop Village
-                17000, 17301, 17304, 17900, 17634, 17501, // Lost Land 
-                18000, 18644, 18645, 18648, // Final Confrontation
-                18997, 18999, // Thunder and Campaigner
-            });
-            vars.trackWarp(12041, 2); // 2nd roof warp in Ancient City
-        }
+    // Split on boss entrances
+    if (settings["split-longhunter"]) {
+        vars.trackWarp(12998, 1);
+        vars.splittingOn.Add("Longhunter");
+    }
+    if (settings["split-mantis"]) {
+        vars.trackWarp(14999, 1);
+        vars.splittingOn.Add("Mantis");
+    }
+    if (settings["split-thunder"]) {
+        vars.trackWarp(18997, 1);
+        vars.splittingOn.Add("Thunder");
+    }
+    if (settings["split-campaigner"]) {
+        vars.trackWarp(18999, 1);
+        vars.splittingOn.Add("Campaigner");
     }
 
-    // Unknown route
-    else 
-    {
-        vars.debug("Custom Splits not enabled and route not recognized. Only splitting on Campaigner death.");
-    }
+    // Split on Level 8 Keys
+    // Test randomizer on seed 49761. A full run with cheats is <5 minutes.
+    // if (settings["split-keys-8"]) {
+    //     vars.trackKeys = true;
+    //     vars.splittingOn.Add("Level 8 Keys");
+    // }
+
+    // Uncomment to debug selected splits
+    // if (vars.splittingOn.Count == 0)
+    // {
+    //     vars.debug("No splits selected, only splitting on Campaigner death.");
+    // } else {
+    //     vars.debug("Splitting on: " + String.Join(", ", vars.splittingOn));
+    // }
 
     // Start a run on the transition between title screen and Hub Ruins cinematic
     // This still works in the randomizer
@@ -315,17 +250,18 @@ start
 
 split 
 {
-    // Are we splitting on all warps or is this Warp ID being tracked?
-    bool isWarpSplit = vars.splitAllWarps ? old.warpId == -1 && current.warpId > 0 :
-                        old.warpId == -1 && current.warpId != -1 && vars.isWarpSplit(current.warpId, current.levelKeysRemaining); 
+    // Split on any warp
+    // Ignore warp after TTV pillar jump near key unless key has been collected
+    bool isWarpSplit = settings["split-warp"] && old.warpId == -1 && current.warpId > 0
+                        && !(current.warpId == 15004 && current.levelKeysRemaining != 1);
 
-    // Did we find a Level 8 Key?
+    // Split on first warp to new level
+    bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
+
+    // Split on Level 8 key
 //    bool isKeySplit = vars.trackKeys && (current.level8Keys > old.level8Keys);
 
-    // Is this our first time visiting a new level?
-    bool isLevelSplit = settings["split-level"] && vars.isWarpSplit(current.warpId, current.levelKeysRemaining);
- 
-    // Always split when we kill the Campaigner, regardless of route
+    // Split on Campaigner death
     bool isFinalSplit = false;
     if (!vars.finalSplitDone)
     {
@@ -340,8 +276,8 @@ split
     {
         vars.debug("Split Detected." +
                         " Warp:" + isWarpSplit + " " + current.warpId +
-//                        " Key:" + isKeySplit +
                         " Level:" + isLevelSplit + 
+//                        " Key:" + isKeySplit +
                         " Final:" + isFinalSplit);
     }
 
