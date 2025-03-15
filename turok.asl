@@ -90,6 +90,16 @@ state("sobek_Shipping_Steam_x64", "3.0.880")
     //byte level8Keys: 0x38E408, 0x414;
 }
 
+// 3.0.940 (2025-03-14)
+state("sobek_Shipping_Steam_x64", "3.0.940")
+{
+    string255 map: 0xAE9C90, 0x0;
+    int warpId: 0xAC19E8, 0x960; 
+    int levelKeysRemaining: 0xAE9CD8, 0x8C; 
+    byte inCinematic: 0x781578;
+    //byte level8Keys: 0x38E408, 0x414;
+}
+
 init
 {
     // Call this action to print debug messages, e.g. vars.debug("Split on warpId: " + warpId)
@@ -104,6 +114,7 @@ init
     checksums.Add("65-FA-12-6A-09-5F-83-0E-29-19-4E-64-3B-65-43-48-A1-BE-14-97", "2.0");
     checksums.Add("5B-C4-BC-04-17-7B-CA-5C-3A-5A-C5-BD-BE-B2-C9-A3-CA-E2-90-95", "3.0.857");
     checksums.Add("75-CF-4D-0D-34-C3-F8-54-0F-77-09-64-D3-9D-8B-27-93-73-26-C2", "3.0.880");
+    checksums.Add("0A-CD-C4-94-F1-C3-23-87-E5-4F-11-31-57-E4-44-35-B5-53-01-1C", "3.0.940");
 
     // Get a SHA1 checksum of sobek.exe
     string processPath = modules.First().FileName;
