@@ -50,24 +50,14 @@ state("sobek_Shipping_Steam_x64", "1.4.7")
     byte inCinematic: 0x286A0, 0x0;
 }
 
-// 2.0 Pre-3.0 Release (2018-07-28)
-state("sobek_Shipping_Steam_x64", "2.0_legacy")
+// 2.0 (2018-07-28)
+state("sobek_Shipping_Steam_x64", "2.0")
 {
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
     int levelKeysRemaining: 0x38E428, 0x50; 
     byte inCinematic: 0x25EB4, 0x0;
     byte level8Keys: 0x38E408, 0x414;
-}
-
-// 2.0 Post-3.0 Release (2025-02-28)
-state("sobek_Shipping_Steam_x64", "2.0")
-{
-    string255 map: 0x3B45AC, 0x0;
-    int warpId: 0x50010, 0x0; 
-    int levelKeysRemaining: 0x3B45D8, 0x50; 
-    byte inCinematic: 0x2BC54, 0x0;
-    byte level8Keys: 0x3B45B8, 0x414;
 }
 
 // 3.0.857 (2025-02-28)
@@ -110,8 +100,7 @@ init
     checksums.Add("34-69-03-7C-0F-FB-13-1C-0B-85-4F-79-35-1A-4B-9B-FA-97-92-EC", "1.4.3");
     checksums.Add("0F-28-95-79-B0-F7-07-14-56-F5-49-02-41-92-D0-2E-D7-7B-D7-B0", "1.4.6");
     checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
-    checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0_legacy");
-    checksums.Add("65-FA-12-6A-09-5F-83-0E-29-19-4E-64-3B-65-43-48-A1-BE-14-97", "2.0");
+    checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
     checksums.Add("5B-C4-BC-04-17-7B-CA-5C-3A-5A-C5-BD-BE-B2-C9-A3-CA-E2-90-95", "3.0.857");
     checksums.Add("75-CF-4D-0D-34-C3-F8-54-0F-77-09-64-D3-9D-8B-27-93-73-26-C2", "3.0.880");
     checksums.Add("0A-CD-C4-94-F1-C3-23-87-E5-4F-11-31-57-E4-44-35-B5-53-01-1C", "3.0.940");
