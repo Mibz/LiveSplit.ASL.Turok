@@ -67,7 +67,6 @@ state("sobek_Shipping_Steam_x64", "3.0.857")
     int warpId: 0xAAE038, 0x950; 
     int levelKeysRemaining: 0xAD6328, 0x8C; 
     byte inCinematic: 0x765A90, 0xAC8;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.880 (2025-03-xx)
@@ -77,7 +76,6 @@ state("sobek_Shipping_Steam_x64", "3.0.880")
     int warpId: 0xAAF038, 0x960; 
     int levelKeysRemaining: 0xAD7328, 0x8C; 
     byte inCinematic: 0x766A90, 0xAC8;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.940 (2025-03-14)
@@ -87,7 +85,6 @@ state("sobek_Shipping_Steam_x64", "3.0.940")
     int warpId: 0xAC19E8, 0x960; 
     int levelKeysRemaining: 0xAE9CD8, 0x8C; 
     byte inCinematic: 0x781578;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.968 (2025-03-21)
@@ -97,7 +94,6 @@ state("sobek_Shipping_Steam_x64", "3.0.968")
     int warpId: 0xAC3A08, 0x960; 
     int levelKeysRemaining: 0xAEBCF8, 0x8C; 
     byte inCinematic: 0x783598;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.988 (2025-03-26)
@@ -107,7 +103,6 @@ state("sobek_Shipping_Steam_x64", "3.0.988")
     int warpId: 0xAC48E8, 0x900; 
     int levelKeysRemaining: 0xAECBD8, 0x8C; 
     byte inCinematic: 0x7844D8;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 // 3.0.1001 (2025-04-01)
@@ -117,7 +112,6 @@ state("sobek_Shipping_Steam_x64", "3.0.1001")
     int warpId: 0xAC58C8, 0x900; 
     int levelKeysRemaining: 0xAEDBB8, 0x8C; 
     byte inCinematic: 0x7854D8;
-    //byte level8Keys: 0x38E408, 0x414;
 }
 
 init
