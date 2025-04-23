@@ -60,62 +60,8 @@ state("sobek_Shipping_Steam_x64", "2.0")
     byte level8Keys: 0x38E408, 0x414;
 }
 
-// 3.0.857 (2025-02-28)
-state("sobek_Shipping_Steam_x64", "3.0.857")
-{
-    string255 map: 0xAD62E0, 0x0;
-    int warpId: 0xAAE038, 0x950; 
-    int levelKeysRemaining: 0xAD6328, 0x8C; 
-    byte inCinematic: 0x765A90, 0xAC8;
-}
-
-// 3.0.880 (2025-03-xx)
-state("sobek_Shipping_Steam_x64", "3.0.880")
-{
-    string255 map: 0xAD72E0, 0x0;
-    int warpId: 0xAAF038, 0x960; 
-    int levelKeysRemaining: 0xAD7328, 0x8C; 
-    byte inCinematic: 0x766A90, 0xAC8;
-}
-
-// 3.0.940 (2025-03-14)
-state("sobek_Shipping_Steam_x64", "3.0.940")
-{
-    string255 map: 0xAE9C90, 0x0;
-    int warpId: 0xAC19E8, 0x960; 
-    int levelKeysRemaining: 0xAE9CD8, 0x8C; 
-    byte inCinematic: 0x781578;
-}
-
-// 3.0.968 (2025-03-21)
-state("sobek_Shipping_Steam_x64", "3.0.968")
-{
-    string255 map: 0xAEBCB0, 0x0;
-    int warpId: 0xAC3A08, 0x960; 
-    int levelKeysRemaining: 0xAEBCF8, 0x8C; 
-    byte inCinematic: 0x783598;
-}
-
-// 3.0.988 (2025-03-26)
-state("sobek_Shipping_Steam_x64", "3.0.988")
-{
-    string255 map: 0xAECB90, 0x0;
-    int warpId: 0xAC48E8, 0x900; 
-    int levelKeysRemaining: 0xAECBD8, 0x8C; 
-    byte inCinematic: 0x7844D8;
-}
-
-// 3.0.1001 (2025-04-01)
-state("sobek_Shipping_Steam_x64", "3.0.1001")
-{
-    string255 map: 0xAEDB70, 0x0;
-    int warpId: 0xAC58C8, 0x900; 
-    int levelKeysRemaining: 0xAEDBB8, 0x8C; 
-    byte inCinematic: 0x7854D8;
-}
-
-// 3.0.1009 (2025-04-17)
-state("sobek_Shipping_Steam_x64", "3.0.1009")
+// 3.0.1013 (2025-04-23)
+state("sobek_Shipping_Steam_x64", "3.0.1013")
 {
     string255 map: 0xAEDB90, 0x0;
     int warpId: 0xAC58E8, 0x900; 
@@ -134,13 +80,7 @@ init
     checksums.Add("0F-28-95-79-B0-F7-07-14-56-F5-49-02-41-92-D0-2E-D7-7B-D7-B0", "1.4.6");
     checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
     checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
-    checksums.Add("5B-C4-BC-04-17-7B-CA-5C-3A-5A-C5-BD-BE-B2-C9-A3-CA-E2-90-95", "3.0.857");
-    checksums.Add("75-CF-4D-0D-34-C3-F8-54-0F-77-09-64-D3-9D-8B-27-93-73-26-C2", "3.0.880");
-    checksums.Add("0A-CD-C4-94-F1-C3-23-87-E5-4F-11-31-57-E4-44-35-B5-53-01-1C", "3.0.940");
-    checksums.Add("16-01-D4-28-60-96-D3-B1-03-8A-45-AA-B7-BD-37-BB-CA-A8-BC-34", "3.0.968");
-    checksums.Add("60-FC-95-82-03-5A-6F-19-73-01-3B-3E-A7-15-3B-6F-9D-9A-AA-6D", "3.0.988");
-    checksums.Add("1F-99-20-86-3E-08-FE-5D-E7-3A-8C-CD-B4-3C-1B-77-E9-4C-D6-91", "3.0.1001");
-    checksums.Add("EE-4B-84-DA-86-86-5E-47-40-36-C3-AF-EF-C8-DD-18-7D-16-C6-C0", "3.0.1009");
+    checksums.Add("05-C5-46-39-3E-7E-14-06-97-6A-B9-FB-30-77-6E-F3-CB-31-0E-3C", "3.0.1013");
 
     // Get a SHA1 checksum of sobek.exe
     string processPath = modules.First().FileName;
@@ -157,7 +97,7 @@ init
     }
     else
     {
-        version = "3.0.857";
+        version = "3.0.1013";
         vars.debug("Couldn't detect version, defaulting to latest release");
     }
 }
