@@ -72,7 +72,6 @@ state("sobek_Shipping_Steam_x64", "3.0.1013")
 // 3.2.1281 (2025-12-01)
 state("sobek_Shipping_Steam_x64", "3.2.1281")
 {
-    // 10203 10204
     string255 map: 0xDF04F0, 0x0;
     int warpId: 0xD27150; 
     int levelKeysRemaining: 0xDF0538, 0x8C; 
