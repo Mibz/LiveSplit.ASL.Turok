@@ -60,15 +60,6 @@ state("sobek_Shipping_Steam_x64", "2.0")
     byte level8Keys: 0x38E408, 0x414;
 }
 
-// 3.0.1013 (2025-04-23)
-state("sobek_Shipping_Steam_x64", "3.0.1013")
-{
-    string255 map: 0xAEDB90, 0x0;
-    int warpId: 0xAC58E8, 0x900; 
-    int levelKeysRemaining: 0xAEDBD8, 0x8C; 
-    byte inCinematic: 0x7854D8;
-}
-
 // 3.2.1281 (2025-12-01)
 state("sobek_Shipping_Steam_x64", "3.2.1281")
 {
@@ -89,7 +80,6 @@ init
     checksums.Add("0F-28-95-79-B0-F7-07-14-56-F5-49-02-41-92-D0-2E-D7-7B-D7-B0", "1.4.6");
     checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
     checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
-    checksums.Add("05-C5-46-39-3E-7E-14-06-97-6A-B9-FB-30-77-6E-F3-CB-31-0E-3C", "3.0.1013");
     checksums.Add("32-89-6D-BA-8B-22-AC-BF-8D-C9-BA-8B-3B-62-B5-E2-35-64-64-9B", "3.2.1281");
 
     // Get a SHA1 checksum of sobek.exe
@@ -107,7 +97,7 @@ init
     }
     else
     {
-        version = "3.0.1013";
+        version = "3.2.1281";
         vars.debug("Couldn't detect version, defaulting to latest release");
     }
 }
