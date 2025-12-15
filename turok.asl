@@ -1,5 +1,5 @@
 // Turok: Remastered Auto-Splitter
-// Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, 2.0, and 3.0
+// Supports Steam version, patches 1.4.3, 1.4.6, 1.4.7, 2.0, and 3.2
 // For issues and support please join the Turok Speedrunning Discord at https://discord.gg/C8vczW2
 
 // Game State Variables
@@ -8,8 +8,7 @@
         The filename of the currently loaded map, eg "levels/level04.map"
         Used to track the start of a run, final split, and resetting on the title screen.
     int warpId
-        The current Warp ID
-        ID of the current in-progress warp
+        ID of the currently in-progress warp
         IDs are directional so a round-trip between the same portals will have two unique IDs
         Warp ID is always -1 when not actively warping
     int levelKeysRemaining
@@ -69,6 +68,15 @@ state("sobek_Shipping_Steam_x64", "3.2.1281")
     byte inCinematic: 0xD267A8;
 }
 
+// 3.2.1299 (2025-12-15)
+state("sobek_Shipping_Steam_x64", "3.2.1299")
+{
+    string255 map: 0xDF24F0, 0x0;
+    int warpId: 0xD29150; 
+    int levelKeysRemaining: 0xDF2538, 0x8C; 
+    byte inCinematic: 0xD287A8;
+}
+
 init
 {
     // Call this action to print debug messages, e.g. vars.debug("Split on warpId: " + warpId)
@@ -81,6 +89,7 @@ init
     checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
     checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
     checksums.Add("32-89-6D-BA-8B-22-AC-BF-8D-C9-BA-8B-3B-62-B5-E2-35-64-64-9B", "3.2.1281");
+    checksums.Add("33-40-BD-FD-80-30-75-86-88-A3-AB-D1-3C-DD-5A-F0-F0-C6-01-0F", "3.2.1299");
 
     // Get a SHA1 checksum of sobek.exe
     string processPath = modules.First().FileName;
@@ -97,7 +106,7 @@ init
     }
     else
     {
-        version = "3.2.1281";
+        version = "3.2.1299";
         vars.debug("Couldn't detect version, defaulting to latest release");
     }
 }
