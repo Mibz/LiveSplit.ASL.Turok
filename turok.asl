@@ -11,7 +11,7 @@
         ID of the currently in-progress warp
         IDs are directional so a round-trip between the same portals will have two unique IDs
         Warp ID is always -1 when not actively warping
-    int levelKeysRemaining
+    byte levelKeysRemaining
         The number of keys remaining in the level
         Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
     byte level8Keys
@@ -45,7 +45,7 @@ state("sobek_Shipping_Steam_x64", "1.4.7")
 {
     string255 map: 0x25DEF0, 0x0;
     int warpId: 0x43C9C, 0x0;
-    int levelKeysRemaining: 0x25DF14, 0x40;
+    byte levelKeysRemaining: 0x25DF14, 0x40;
     byte inCinematic: 0x286A0, 0x0;
 }
 
@@ -54,7 +54,7 @@ state("sobek_Shipping_Steam_x64", "2.0")
 {
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
-    int levelKeysRemaining: 0x38E428, 0x50; 
+    byte levelKeysRemaining: 0x38E428, 0x50; 
     byte inCinematic: 0x25EB4, 0x0;
     byte level8Keys: 0x38E408, 0x414;
 }
@@ -64,7 +64,7 @@ state("sobek_Shipping_Steam_x64", "3.2.1299")
 {
     string255 map: 0xDF24F0, 0x0;
     int warpId: 0xD29150; 
-    int levelKeysRemaining: 0xDF2538, 0x8C; 
+    byte levelKeysRemaining: 0xDF2538, 0x8C; 
     byte inCinematic: 0xD287A8;
 }
 
