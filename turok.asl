@@ -59,15 +59,6 @@ state("sobek_Shipping_Steam_x64", "2.0")
     byte level8Keys: 0x38E408, 0x414;
 }
 
-// 3.2.1281 (2025-12-01)
-state("sobek_Shipping_Steam_x64", "3.2.1281")
-{
-    string255 map: 0xDF04F0, 0x0;
-    int warpId: 0xD27150; 
-    int levelKeysRemaining: 0xDF0538, 0x8C; 
-    byte inCinematic: 0xD267A8;
-}
-
 // 3.2.1299 (2025-12-15)
 state("sobek_Shipping_Steam_x64", "3.2.1299")
 {
