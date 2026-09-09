@@ -27,6 +27,7 @@ state("sobek_Shipping_Steam_x64", "1.4.3")
 {
     string255 map: 0x27D740, 0x0;
     int warpId: 0x41FEC, 0x0;
+    int health: 0x27DA3C, 0xE0;
     byte levelKeysRemaining: 0x27D764, 0x40;
     byte inCinematic: 0x55DCC, 0x0;
 }
@@ -36,6 +37,7 @@ state("sobek_Shipping_Steam_x64", "1.4.6")
 {
     string255 map: 0x286E58, 0x0;
     int warpId: 0x43BCC, 0x0;
+    int health: 0x287154, 0xE0;
     byte levelKeysRemaining: 0x286E7C, 0x40;
     byte inCinematic: 0x287E0, 0x0;
 }
@@ -45,6 +47,7 @@ state("sobek_Shipping_Steam_x64", "1.4.7")
 {
     string255 map: 0x25DEF0, 0x0;
     int warpId: 0x43C9C, 0x0;
+    int health: 0x25E1EC, 0xE0;
     byte levelKeysRemaining: 0x25DF14, 0x40;
     byte inCinematic: 0x286A0, 0x0;
 }
@@ -54,6 +57,7 @@ state("sobek_Shipping_Steam_x64", "2.0")
 {
     string255 map: 0x38E3FC, 0x0;
     int warpId: 0x49ED0, 0x0; 
+    int health: 0x390CF4, 0xE0;
     byte levelKeysRemaining: 0x38E428, 0x50; 
     byte inCinematic: 0x25EB4, 0x0;
     byte level8Keys: 0x38E408, 0x414;
@@ -64,6 +68,7 @@ state("sobek_Shipping_Steam_x64", "3.2.1299")
 {
     string255 map: 0xDF24F0, 0x0;
     int warpId: 0xD29150; 
+    int health: 0xD286E0, 0x15C;
     byte levelKeysRemaining: 0xDF2538, 0x8C; 
     byte inCinematic: 0xD287A8;
 }
@@ -79,7 +84,6 @@ init
     checksums.Add("0F-28-95-79-B0-F7-07-14-56-F5-49-02-41-92-D0-2E-D7-7B-D7-B0", "1.4.6");
     checksums.Add("88-73-01-2C-0B-30-78-7A-4F-D1-D6-34-99-89-41-65-50-E4-30-F7", "1.4.7");
     checksums.Add("30-C8-C2-DB-F2-F2-E3-F1-64-09-2C-8C-22-B2-7C-2D-32-4C-37-41", "2.0");
-    checksums.Add("32-89-6D-BA-8B-22-AC-BF-8D-C9-BA-8B-3B-62-B5-E2-35-64-64-9B", "3.2.1281");
     checksums.Add("33-40-BD-FD-80-30-75-86-88-A3-AB-D1-3C-DD-5A-F0-F0-C6-01-0F", "3.2.1299");
 
     // Get a SHA1 checksum of sobek.exe
@@ -242,7 +246,11 @@ split
     bool isFinalSplit = false;
     if (!vars.finalSplitDone)
     {
-        isFinalSplit = current.map == "levels/level00.map" && current.inCinematic == 1;
+        // Turok dying and Campaigner dying create very similar states
+        // Neither actor's health goes below 0 when they die, but Turok's wraps the integer
+        // so we just make sure the player is not currently dead when the cinematic plays
+        // and hope that it means the Campaigner is dead instead
+        isFinalSplit = current.map == "levels/level00.map" && current.health < 65300 && current.inCinematic == 1;
         vars.finalSplitDone = isFinalSplit;
     }
 
