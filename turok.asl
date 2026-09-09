@@ -11,6 +11,9 @@
         ID of the currently in-progress warp
         IDs are directional so a round-trip between the same portals will have two unique IDs
         Warp ID is always -1 when not actively warping
+    int health
+        Player's current health
+        Used to distinguish between Campaigner death and player death during Campaigner
     byte levelKeysRemaining
         The number of keys remaining in the level
         Currently only used to protect against an edge-case where a player uses the portal after double jump in Treetop Village without grabbing the key first
